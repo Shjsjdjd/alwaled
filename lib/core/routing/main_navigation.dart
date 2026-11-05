@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../../features/parking/parking_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
 import '../../features/planner/planner_screen.dart';
@@ -26,10 +26,7 @@ class _MainNavigationState extends State<MainNavigation> {
       HomeScreen(onNavigate: _selectTab),
       const AssistantScreen(),
       const PlannerScreen(),
-      const PlaceholderScreen(
-        title: 'Parking',
-        icon: Icons.local_parking_outlined,
-      ),
+      const ParkingScreen(),
       const PlaceholderScreen(
         title: 'My Reservations',
         icon: Icons.confirmation_number_outlined,
