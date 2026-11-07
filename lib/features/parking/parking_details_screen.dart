@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import 'parking_reservation_screen.dart';
 
 class ParkingDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> location;
@@ -95,17 +96,20 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: selectedTime == null
-                      ? null
-                      : () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                'Reservation details screen is coming next.',
-                              ),
-                            ),
-                          );
-                        },
+               onPressed: selectedTime == null
+    ? null
+    : () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ParkingReservationScreen(
+              location: location,
+              selectedDate: selectedDate,
+              selectedTime: selectedTime!,
+            ),
+          ),
+        );
+      },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryGreen,
                     foregroundColor: Colors.white,
