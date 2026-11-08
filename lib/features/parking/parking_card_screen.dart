@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_theme.dart';
 import 'parking_confirmation_screen.dart';
+import '../reservations/booking_storage.dart';
 
 class ParkingCardScreen extends StatefulWidget {
   final Map<String, dynamic> location;
@@ -59,6 +60,20 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
   final bookingReference =
       'SD-${DateTime.now().millisecondsSinceEpoch}';
+
+  final booking = {
+    'bookingReference': bookingReference,
+    'location': widget.location['name'],
+    'date': widget.selectedDate.toIso8601String(),
+    'time': widget.selectedTime,
+    'price': widget.location['price'],
+    'paymentMethod': 'Credit / Debit Card',
+    'status': 'Confirmed',
+  };
+
+  await BookingStorage.saveBooking(booking);
+
+  if (!mounted) return;
 
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(

@@ -3,6 +3,7 @@ import '../../features/parking/parking_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
 import '../../features/planner/planner_screen.dart';
+import '../../features/reservations/reservations_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -27,10 +28,7 @@ class _MainNavigationState extends State<MainNavigation> {
       const AssistantScreen(),
       const PlannerScreen(),
       const ParkingScreen(),
-      const PlaceholderScreen(
-        title: 'My Reservations',
-        icon: Icons.confirmation_number_outlined,
-      ),
+      const ReservationsScreen(),
       const PlaceholderScreen(
         title: 'Profile',
         icon: Icons.person_outline,
