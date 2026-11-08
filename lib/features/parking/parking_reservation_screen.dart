@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import 'parking_payment_screen.dart';
 
 class ParkingReservationScreen extends StatelessWidget {
   final Map<String, dynamic> location;
@@ -172,14 +173,17 @@ class ParkingReservationScreen extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text(
-                          'Payment screen is coming next.',
-                        ),
-                      ),
-                    );
-                  },
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => ParkingPaymentScreen(
+        location: location,
+        selectedDate: selectedDate,
+        selectedTime: selectedTime,
+      ),
+    ),
+  );
+},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryGreen,
                     foregroundColor: Colors.white,
