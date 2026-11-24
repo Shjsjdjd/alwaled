@@ -1,0 +1,17 @@
+{
+  "@@locale": "en",
+  "appTitle": "Syria Discover",
+  "home": "Home",
+  "assistant": "Assistant",
+  "planner": "Planner",
+  "parking": "Parking",
+  "reservations": "Reservations",
+  "profile": "Profile",
+  "editProfile": "Edit profile",
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+  "currency": "Currency",
+  "settings": "Settings",
+  "logout": "Log out"
+}

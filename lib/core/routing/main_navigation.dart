@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../l10n/app_localizations.dart';
 import '../../features/parking/parking_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
 import '../../features/planner/planner_screen.dart';
 import '../../features/reservations/reservations_screen.dart';
+import '../../features/profile/profile_screen.dart';
 
 class MainNavigation extends StatefulWidget {
   const MainNavigation({super.key});
@@ -23,48 +25,47 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final screens = [
       HomeScreen(onNavigate: _selectTab),
       const AssistantScreen(),
       const PlannerScreen(),
       const ParkingScreen(),
       const ReservationsScreen(),
-      const PlaceholderScreen(
-        title: 'Profile',
-        icon: Icons.person_outline,
-      ),
+      const ProfileScreen(),
     ];
 
-    const destinations = [
+    final destinations = [
       NavigationDestination(
-        icon: Icon(Icons.home_outlined),
-        selectedIcon: Icon(Icons.home),
-        label: 'Home',
+        icon: const Icon(Icons.home_outlined),
+        selectedIcon: const Icon(Icons.home),
+        label: l10n.home,
       ),
       NavigationDestination(
-        icon: Icon(Icons.auto_awesome_outlined),
-        selectedIcon: Icon(Icons.auto_awesome),
-        label: 'Assistant',
+        icon: const Icon(Icons.auto_awesome_outlined),
+        selectedIcon: const Icon(Icons.auto_awesome),
+        label: l10n.assistant,
       ),
       NavigationDestination(
-        icon: Icon(Icons.map_outlined),
-        selectedIcon: Icon(Icons.map),
-        label: 'Planner',
+        icon: const Icon(Icons.map_outlined),
+        selectedIcon: const Icon(Icons.map),
+        label: l10n.planner,
       ),
       NavigationDestination(
-        icon: Icon(Icons.local_parking_outlined),
-        selectedIcon: Icon(Icons.local_parking),
-        label: 'Parking',
+        icon: const Icon(Icons.local_parking_outlined),
+        selectedIcon: const Icon(Icons.local_parking),
+        label: l10n.parking,
       ),
       NavigationDestination(
-        icon: Icon(Icons.confirmation_number_outlined),
-        selectedIcon: Icon(Icons.confirmation_number),
-        label: 'Reservations',
+        icon: const Icon(Icons.confirmation_number_outlined),
+        selectedIcon: const Icon(Icons.confirmation_number),
+        label: l10n.reservations,
       ),
       NavigationDestination(
-        icon: Icon(Icons.person_outline),
-        selectedIcon: Icon(Icons.person),
-        label: 'Profile',
+        icon: const Icon(Icons.person_outline),
+        selectedIcon: const Icon(Icons.person),
+        label: l10n.profile,
       ),
     ];
 

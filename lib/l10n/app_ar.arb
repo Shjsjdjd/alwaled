@@ -1,0 +1,17 @@
+{
+  "@@locale": "ar",
+  "appTitle": "اكتشف سوريا",
+  "home": "الرئيسية",
+  "assistant": "المساعد الذكي",
+  "planner": "مخطط الرحلات",
+  "parking": "مواقف السيارات",
+  "reservations": "حجوزاتي",
+  "profile": "الملف الشخصي",
+  "editProfile": "تعديل الملف الشخصي",
+  "language": "اللغة",
+  "english": "الإنجليزية",
+  "arabic": "العربية",
+  "currency": "العملة",
+  "settings": "الإعدادات",
+  "logout": "تسجيل الخروج"
+}

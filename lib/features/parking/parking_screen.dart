@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 import 'parking_details_screen.dart';
 
+
 class ParkingScreen extends StatefulWidget {
   const ParkingScreen({super.key});
 
