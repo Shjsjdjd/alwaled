@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 
 class AssistantScreen extends StatefulWidget {
   const AssistantScreen({super.key});
@@ -18,16 +18,12 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
   bool get _hasConversation => _messages.isNotEmpty;
 
-  final List<String> _suggestions = [
-    'Best places to visit in Damascus',
-    'Find a hotel within my budget',
-    'Where can I park near this attraction?',
-  ];
-
   void _sendMessage([String? suggestion]) {
     final text = (suggestion ?? _controller.text).trim();
 
     if (text.isEmpty) return;
+
+    final l10n = AppLocalizations.of(context)!;
 
     setState(() {
       _messages.add({
@@ -37,10 +33,9 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
       _controller.clear();
 
-      // Temporary sample response.
+      // Temporary sample response until the AI backend is connected.
       _messages.add({
-        'text': 'Here are three places to start '
-            '(sample recommendations):',
+        'text': l10n.sampleAssistantResponse,
         'isUser': false,
       });
     });
@@ -59,13 +54,15 @@ class _AssistantScreenState extends State<AssistantScreen> {
   @override
   void dispose() {
     _controller.dispose();
-_inputFocusNode.dispose();
-_scrollController.dispose();
-super.dispose();
+    _inputFocusNode.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       body: SafeArea(
@@ -77,9 +74,9 @@ super.dispose();
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Syria AI Assistant',
-                    style: TextStyle(
+                  Text(
+                    l10n.assistantTitle,
+                    style: const TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primaryGreen,
@@ -93,9 +90,9 @@ super.dispose();
                   ),
                   if (!_hasConversation) ...[
                     const SizedBox(height: 12),
-                    const Text(
-                      'Ask about places, hotels, food and parking',
-                      style: TextStyle(
+                    Text(
+                      l10n.assistantSubtitle,
+                      style: const TextStyle(
                         fontSize: 13,
                         color: AppTheme.textMuted,
                       ),
@@ -121,6 +118,14 @@ super.dispose();
   }
 
   Widget _buildWelcome() {
+    final l10n = AppLocalizations.of(context)!;
+
+    final suggestions = [
+      l10n.suggestionDamascus,
+      l10n.suggestionHotel,
+      l10n.suggestionParking,
+    ];
+
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
@@ -149,9 +154,10 @@ super.dispose();
 
           const SizedBox(height: 35),
 
-          const Text(
-            'How can I help you?',
-            style: TextStyle(
+          Text(
+            l10n.assistantWelcome,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: AppTheme.primaryGreen,
@@ -160,11 +166,10 @@ super.dispose();
 
           const SizedBox(height: 12),
 
-          const Text(
-            'I can suggest attractions, hotels, restaurants\n'
-            'and parking. Answers are illustrative for now.',
+          Text(
+            l10n.assistantDescription,
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 13,
               height: 1.5,
               color: AppTheme.textMuted,
@@ -173,11 +178,11 @@ super.dispose();
 
           const SizedBox(height: 32),
 
-          ..._suggestions.map(
+          ...suggestions.map(
             (suggestion) => Padding(
               padding: const EdgeInsets.only(bottom: 12),
               child: Align(
-                alignment: Alignment.centerLeft,
+                alignment: AlignmentDirectional.centerStart,
                 child: InkWell(
                   onTap: () => _sendMessage(suggestion),
                   borderRadius: BorderRadius.circular(20),
@@ -211,6 +216,8 @@ super.dispose();
   }
 
   Widget _buildConversation() {
+    final l10n = AppLocalizations.of(context)!;
+
     return ListView(
       controller: _scrollController,
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 20),
@@ -218,7 +225,7 @@ super.dispose();
         ..._messages.map((message) {
           if (message['isUser'] == true) {
             return Align(
-              alignment: Alignment.centerRight,
+              alignment: AlignmentDirectional.centerEnd,
               child: Container(
                 constraints: const BoxConstraints(maxWidth: 280),
                 margin: const EdgeInsets.only(bottom: 20),
@@ -280,29 +287,30 @@ super.dispose();
               const SizedBox(height: 12),
 
               _recommendationCard(
-                'Umayyad Mosque',
-                'Historic site',
+                l10n.umayyadMosque,
+                l10n.historicSite,
                 Icons.mosque_outlined,
               ),
 
               _recommendationCard(
-                'Azm Palace',
-                'Museum',
+                l10n.azmPalace,
+                l10n.museum,
                 Icons.account_balance_outlined,
               ),
 
               _recommendationCard(
-                'Al-Hamidiyya Souq',
-                'Traditional market',
+                l10n.hamidiyyaSouq,
+                l10n.traditionalMarket,
                 Icons.storefront_outlined,
               ),
 
               const SizedBox(height: 20),
 
-              const Center(
+              Center(
                 child: Text(
-                  'Sample conversation. No live AI yet.',
-                  style: TextStyle(
+                  l10n.sampleConversationNotice,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
                     fontSize: 11,
                     color: AppTheme.textMuted,
                   ),
@@ -320,9 +328,14 @@ super.dispose();
     String category,
     IconData icon,
   ) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       height: 74,
-      margin: const EdgeInsets.only(left: 40, bottom: 10),
+      margin: const EdgeInsetsDirectional.only(
+        start: 40,
+        bottom: 10,
+      ),
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -353,6 +366,8 @@ super.dispose();
               children: [
                 Text(
                   name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
@@ -362,6 +377,8 @@ super.dispose();
                 const SizedBox(height: 4),
                 Text(
                   category,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 11,
                     color: AppTheme.textMuted,
@@ -374,12 +391,12 @@ super.dispose();
           TextButton(
             onPressed: () {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content: Text('Destination details will be connected later.'),
+                SnackBar(
+                  content: Text(l10n.destinationDetailsLater),
                 ),
               );
             },
-            child: const Text('View'),
+            child: Text(l10n.view),
           ),
         ],
       ),
@@ -387,6 +404,9 @@ super.dispose();
   }
 
   Widget _buildMessageInput() {
+    final l10n = AppLocalizations.of(context)!;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+
     return Container(
       margin: const EdgeInsets.fromLTRB(20, 10, 20, 16),
       height: 52,
@@ -401,25 +421,27 @@ super.dispose();
         children: [
           Expanded(
             child: TextField(
-  controller: _controller,
-  focusNode: _inputFocusNode,
-  autofocus: false,
+              controller: _controller,
+              focusNode: _inputFocusNode,
+              autofocus: false,
               textInputAction: TextInputAction.send,
               onSubmitted: (_) => _sendMessage(),
-              decoration: const InputDecoration(
-                hintText: 'Ask about Syria...',
-                hintStyle: TextStyle(
+              decoration: InputDecoration(
+                hintText: l10n.askAboutSyria,
+                hintStyle: const TextStyle(
                   fontSize: 14,
                   color: AppTheme.textMuted,
                 ),
                 border: InputBorder.none,
-                contentPadding: EdgeInsets.only(left: 24),
+                contentPadding: const EdgeInsetsDirectional.only(
+                  start: 24,
+                ),
               ),
             ),
           ),
 
           Padding(
-            padding: const EdgeInsets.only(right: 6),
+            padding: const EdgeInsetsDirectional.only(end: 6),
             child: IconButton(
               onPressed: _sendMessage,
               style: IconButton.styleFrom(
@@ -427,8 +449,8 @@ super.dispose();
                 foregroundColor: Colors.white,
                 fixedSize: const Size(36, 36),
               ),
-              icon: const Icon(
-                Icons.arrow_forward,
+              icon: Icon(
+                isArabic ? Icons.arrow_back : Icons.arrow_forward,
                 size: 19,
               ),
             ),
@@ -438,4 +460,3 @@ super.dispose();
     );
   }
 }
-

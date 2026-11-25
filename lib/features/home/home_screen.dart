@@ -1,5 +1,9 @@
+
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_language.dart';
+import '../../l10n/app_localizations.dart';
 import '../areas/area_details_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -12,6 +16,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       body: SafeArea(
@@ -44,10 +50,20 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'EN  |  AR',
-                        style: TextStyle(
+                      onPressed: () async {
+                        final currentLanguage =
+                            AppLanguage.locale.value.languageCode;
+
+                        final newLanguage =
+                            currentLanguage == 'en' ? 'ar' : 'en';
+
+                        await AppLanguage.changeLanguage(newLanguage);
+                      },
+                      child: Text(
+                        Localizations.localeOf(context).languageCode == 'ar'
+                            ? 'AR | EN'
+                            : 'EN | AR',
+                        style: const TextStyle(
                           color: AppTheme.primaryGreen,
                           fontWeight: FontWeight.w600,
                         ),
@@ -69,23 +85,23 @@ class HomeScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(color: AppTheme.border),
                     ),
-                    child: const Row(
+                    child: Row(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.auto_awesome,
                           color: AppTheme.primaryGreen,
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Ask AI about Syria...',
-                            style: TextStyle(
+                            l10n.askAiAboutSyria,
+                            style: const TextStyle(
                               color: AppTheme.textMuted,
                               fontSize: 14,
                             ),
                           ),
                         ),
-                        Icon(
+                        const Icon(
                           Icons.arrow_forward,
                           color: AppTheme.primaryGreen,
                         ),
@@ -126,18 +142,18 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        const Text(
-                          'Discover Syria',
-                          style: TextStyle(
+                        Text(
+                          l10n.discoverSyria,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 6),
-                        const Text(
-                          'Explore history, culture & hidden gems.',
-                          style: TextStyle(
+                        Text(
+                          l10n.exploreHistory,
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                           ),
@@ -154,9 +170,9 @@ class HomeScreen extends StatelessWidget {
                               vertical: 13,
                             ),
                           ),
-                          child: const Text(
-                            'Plan a trip',
-                            style: TextStyle(
+                          child: Text(
+                            l10n.planTrip,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -169,9 +185,9 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 28),
 
                 // QUICK ACTIONS
-                const Text(
-                  'Explore Services',
-                  style: TextStyle(
+                Text(
+                  l10n.exploreServices,
+                  style: const TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.textDark,
@@ -185,7 +201,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: _QuickAction(
                         icon: Icons.auto_awesome,
-                        label: 'AI Assistant',
+                        label: l10n.aiAssistant,
                         onTap: () => onNavigate(1),
                       ),
                     ),
@@ -193,7 +209,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: _QuickAction(
                         icon: Icons.map_outlined,
-                        label: 'AI Planner',
+                        label: l10n.aiPlanner,
                         onTap: () => onNavigate(2),
                       ),
                     ),
@@ -201,7 +217,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: _QuickAction(
                         icon: Icons.local_parking,
-                        label: 'Parking',
+                        label: l10n.parking,
                         onTap: () => onNavigate(3),
                       ),
                     ),
@@ -209,7 +225,7 @@ class HomeScreen extends StatelessWidget {
                     Expanded(
                       child: _QuickAction(
                         icon: Icons.confirmation_number_outlined,
-                        label: 'Reservations',
+                        label: l10n.reservations,
                         onTap: () => onNavigate(4),
                       ),
                     ),
@@ -219,9 +235,9 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 30),
 
                 // FEATURED DESTINATIONS
-                const Text(
-                  'Featured Destinations',
-                  style: TextStyle(
+                Text(
+                  l10n.featuredDestinations,
+                  style: const TextStyle(
                     fontSize: 19,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.textDark,
@@ -234,8 +250,8 @@ class HomeScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: _DestinationCard(
-                        name: 'Damascus',
-                        description: 'The oldest capital',
+                        name: l10n.damascus,
+                        description: l10n.damascusDescription,
                         icon: Icons.mosque_outlined,
                         onTap: () {
                           Navigator.push(
@@ -251,8 +267,8 @@ class HomeScreen extends StatelessWidget {
                     const SizedBox(width: 14),
                     Expanded(
                       child: _DestinationCard(
-                        name: 'Palmyra',
-                        description: 'Ancient city',
+                        name: l10n.palmyra,
+                        description: l10n.palmyraDescription,
                         icon: Icons.account_balance_outlined,
                       ),
                     ),
@@ -305,6 +321,8 @@ class _QuickAction extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               fontSize: 11,
               fontWeight: FontWeight.w600,
@@ -356,6 +374,8 @@ class _DestinationCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.bold,
@@ -364,6 +384,8 @@ class _DestinationCard extends StatelessWidget {
             ),
             Text(
               description,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 fontSize: 11,
                 color: AppTheme.textMuted,

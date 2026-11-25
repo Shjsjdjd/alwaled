@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,8 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   static const Color textColor = Color(0xFF242820);
   static const Color mutedColor = Color(0xFF77766E);
 
-  String _name = 'User Name';
-  String _email = 'user@email.com';
+  String _name = '';
+  String _email = '';
 
   @override
   void initState() {
@@ -33,9 +32,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     if (!mounted) return;
 
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() {
-      _name = prefs.getString('profile_name') ?? 'User Name';
-      _email = prefs.getString('profile_email') ?? 'user@email.com';
+      _name = prefs.getString('profile_name') ?? l10n.defaultUserName;
+      _email = prefs.getString('profile_email') ?? l10n.defaultEmail;
     });
   }
 
@@ -52,9 +53,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _email = email;
     });
 
+    final l10n = AppLocalizations.of(context)!;
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Profile updated successfully.'),
+      SnackBar(
+        content: Text(l10n.profileUpdated),
         behavior: SnackBarBehavior.floating,
       ),
     );
@@ -73,46 +76,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
- void _showLanguageDialog() {
-  showDialog(
-    context: context,
-    builder: (dialogContext) {
-      return AlertDialog(
-        title: const Text('Select Language'),
-        content: ValueListenableBuilder<Locale>(
-          valueListenable: AppLanguage.locale,
-          builder: (context, currentLocale, child) {
-            return RadioGroup<String>(
-              groupValue: currentLocale.languageCode,
-              onChanged: (value) async {
-                if (value == null) return;
+  void _showLanguageDialog() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
 
-                await AppLanguage.changeLanguage(value);
+        return AlertDialog(
+          title: Text(l10n.selectLanguage),
+          content: ValueListenableBuilder<Locale>(
+            valueListenable: AppLanguage.locale,
+            builder: (context, currentLocale, child) {
+              return RadioGroup<String>(
+                groupValue: currentLocale.languageCode,
+                onChanged: (value) async {
+                  if (value == null) return;
 
-                if (!dialogContext.mounted) return;
+                  await AppLanguage.changeLanguage(value);
 
-                Navigator.pop(dialogContext);
-              },
-              child: const Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RadioListTile<String>(
-                    title: Text('English'),
-                    value: 'en',
-                  ),
-                  RadioListTile<String>(
-                    title: Text('العربية'),
-                    value: 'ar',
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    },
-  );
-}
+                  if (!dialogContext.mounted) return;
+
+                  Navigator.pop(dialogContext);
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      title: Text(l10n.english),
+                      value: 'en',
+                    ),
+                    RadioListTile<String>(
+                      title: Text(l10n.arabic),
+                      value: 'ar',
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
 
   void _showMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -224,8 +229,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       builder: (context, locale, child) {
                         final language =
                             locale.languageCode == 'ar'
-                                ? 'العربية'
-                                : 'English';
+                                ? l10n.arabic
+                                : l10n.english;
 
                         return _buildOption(
                           title: '${l10n.language}: $language',
@@ -237,10 +242,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildDivider(),
 
                     _buildOption(
-                      title: 'Currency: USD (\$)',
+                      title: l10n.currencyUsd,
                       onTap: () {
                         _showMessage(
-                          'Currency settings are not implemented yet.',
+                          l10n.currencySettingsNotImplemented,
                         );
                       },
                     ),
@@ -248,10 +253,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildDivider(),
 
                     _buildOption(
-                      title: 'Settings',
+                      title: l10n.settings,
                       onTap: () {
                         _showMessage(
-                          'Settings are not implemented yet.',
+                          l10n.settingsNotImplemented,
                         );
                       },
                     ),
@@ -267,7 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: OutlinedButton(
                   onPressed: () {
                     _showMessage(
-                      'Authentication is not connected yet.',
+                      l10n.authenticationNotConnected,
                     );
                   },
                   style: OutlinedButton.styleFrom(
@@ -280,9 +285,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                   ),
-                  child: const Text(
-                    'Log out',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.logout,
+                    style: const TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
                     ),
@@ -389,9 +394,11 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return AlertDialog(
       scrollable: true,
-      title: const Text('Edit Profile'),
+      title: Text(l10n.editProfile),
       content: Form(
         key: formKey,
         child: Column(
@@ -399,13 +406,13 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
           children: [
             TextFormField(
               controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Full Name',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.fullName,
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return 'Enter your name.';
+                  return l10n.enterYourName;
                 }
                 return null;
               },
@@ -416,15 +423,15 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
             TextFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                labelText: 'Email Address',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: l10n.emailAddress,
+                border: const OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null ||
                     !RegExp(r'^[^@]+@[^@]+\.[^@]+$')
                         .hasMatch(value.trim())) {
-                  return 'Enter a valid email address.';
+                  return l10n.enterValidEmail;
                 }
                 return null;
               },
@@ -437,7 +444,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text('Cancel'),
+          child: Text(l10n.cancel),
         ),
 
         ElevatedButton(
@@ -455,7 +462,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
 
             Navigator.pop(context);
           },
-          child: const Text('Save Changes'),
+          child: Text(l10n.saveChanges),
         ),
       ],
     );

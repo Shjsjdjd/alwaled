@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import '../../l10n/app_localizations.dart';
 import '../../features/parking/parking_screen.dart';
@@ -26,6 +27,9 @@ class _MainNavigationState extends State<MainNavigation> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    final isArabic =
+        Localizations.localeOf(context).languageCode == 'ar';
 
     final screens = [
       HomeScreen(onNavigate: _selectTab),
@@ -74,13 +78,24 @@ class _MainNavigationState extends State<MainNavigation> {
         index: _selectedIndex,
         children: screens,
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: _selectTab,
-        destinations: destinations,
-        backgroundColor: Colors.white,
-        indicatorColor: const Color(0xFFE5EFE9),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+      bottomNavigationBar: NavigationBarTheme(
+        data: NavigationBarThemeData(
+          labelTextStyle: WidgetStatePropertyAll(
+            TextStyle(
+              fontSize: isArabic ? 10 : 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        child: NavigationBar(
+          selectedIndex: _selectedIndex,
+          onDestinationSelected: _selectTab,
+          destinations: destinations,
+          backgroundColor: Colors.white,
+          indicatorColor: const Color(0xFFE5EFE9),
+          labelBehavior:
+              NavigationDestinationLabelBehavior.alwaysShow,
+        ),
       ),
     );
   }
