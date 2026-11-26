@@ -679,6 +679,540 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your personalized itinerary will appear here once the AI planning service is connected.'**
   String get itineraryPlaceholder;
+
+  /// No description provided for @findParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Find Parking'**
+  String get findParking;
+
+  /// No description provided for @searchParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Search parking near attractions...'**
+  String get searchParking;
+
+  /// No description provided for @parkingNearDamascus.
+  ///
+  /// In en, this message translates to:
+  /// **'Near: Damascus Old City'**
+  String get parkingNearDamascus;
+
+  /// No description provided for @listView.
+  ///
+  /// In en, this message translates to:
+  /// **'List'**
+  String get listView;
+
+  /// No description provided for @mapView.
+  ///
+  /// In en, this message translates to:
+  /// **'Map'**
+  String get mapView;
+
+  /// No description provided for @noParkingFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No parking locations found.'**
+  String get noParkingFound;
+
+  /// No description provided for @oldCityParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Old City Parking A'**
+  String get oldCityParking;
+
+  /// No description provided for @citadelParking.
+  ///
+  /// In en, this message translates to:
+  /// **'Citadel Parking B'**
+  String get citadelParking;
+
+  /// No description provided for @distanceUmayyad.
+  ///
+  /// In en, this message translates to:
+  /// **'350 m from Umayyad Mosque'**
+  String get distanceUmayyad;
+
+  /// No description provided for @distanceCitadel.
+  ///
+  /// In en, this message translates to:
+  /// **'600 m from Citadel'**
+  String get distanceCitadel;
+
+  /// No description provided for @parkingPriceOldCity.
+  ///
+  /// In en, this message translates to:
+  /// **'SYP 2,000 / hour (sample)'**
+  String get parkingPriceOldCity;
+
+  /// No description provided for @parkingPriceCitadel.
+  ///
+  /// In en, this message translates to:
+  /// **'SYP 1,500 / hour (sample)'**
+  String get parkingPriceCitadel;
+
+  /// No description provided for @available.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get available;
+
+  /// No description provided for @limitedAvailability.
+  ///
+  /// In en, this message translates to:
+  /// **'Limited'**
+  String get limitedAvailability;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View details'**
+  String get viewDetails;
+
+  /// No description provided for @illustrativeMapNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Illustrative map, not live data'**
+  String get illustrativeMapNotice;
+
+  /// No description provided for @parkingDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Details'**
+  String get parkingDetails;
+
+  /// No description provided for @selectDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Date'**
+  String get selectDate;
+
+  /// No description provided for @availableTimeSlots.
+  ///
+  /// In en, this message translates to:
+  /// **'Available Time Slots'**
+  String get availableTimeSlots;
+
+  /// No description provided for @parkingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Summary'**
+  String get parkingSummary;
+
+  /// No description provided for @continueButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueButton;
+
+  /// No description provided for @statusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get statusLabel;
+
+  /// No description provided for @parkingLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking location'**
+  String get parkingLocationLabel;
+
+  /// No description provided for @dateLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Date'**
+  String get dateLabel;
+
+  /// No description provided for @timeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time'**
+  String get timeLabel;
+
+  /// No description provided for @priceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Price'**
+  String get priceLabel;
+
+  /// No description provided for @notSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not selected'**
+  String get notSelected;
+
+  /// No description provided for @reservationDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation Details'**
+  String get reservationDetailsTitle;
+
+  /// No description provided for @reviewYourBooking.
+  ///
+  /// In en, this message translates to:
+  /// **'Review Your Booking'**
+  String get reviewYourBooking;
+
+  /// No description provided for @reviewBookingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check your parking reservation details before proceeding.'**
+  String get reviewBookingDescription;
+
+  /// No description provided for @locationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Location'**
+  String get locationLabel;
+
+  /// No description provided for @bookingNotConfirmedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your booking is not confirmed yet. Continue to the payment step to complete the reservation.'**
+  String get bookingNotConfirmedMessage;
+
+  /// No description provided for @continueToPayment.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Payment'**
+  String get continueToPayment;
+
+  /// No description provided for @paymentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment'**
+  String get paymentTitle;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Method'**
+  String get paymentMethod;
+
+  /// No description provided for @choosePaymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your payment method to complete the reservation.'**
+  String get choosePaymentMethod;
+
+  /// No description provided for @creditDebitCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Credit / Debit Card'**
+  String get creditDebitCard;
+
+  /// No description provided for @supportedCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Visa, Mastercard and other cards'**
+  String get supportedCards;
+
+  /// No description provided for @bookingSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Summary'**
+  String get bookingSummary;
+
+  /// No description provided for @parkingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking'**
+  String get parkingLabel;
+
+  /// No description provided for @totalLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Total'**
+  String get totalLabel;
+
+  /// No description provided for @demoPaymentNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Demonstration payment only. No real money will be charged.'**
+  String get demoPaymentNotice;
+
+  /// No description provided for @continueToCardDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to Card Details'**
+  String get continueToCardDetails;
+
+  /// No description provided for @cardDetailsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Details'**
+  String get cardDetailsTitle;
+
+  /// No description provided for @enterCardInformation.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Card Information'**
+  String get enterCardInformation;
+
+  /// No description provided for @enterDemoCardDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter demonstration card details to complete your booking.'**
+  String get enterDemoCardDetails;
+
+  /// No description provided for @demoCard.
+  ///
+  /// In en, this message translates to:
+  /// **'DEMO CARD'**
+  String get demoCard;
+
+  /// No description provided for @cardholderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cardholder Name'**
+  String get cardholderName;
+
+  /// No description provided for @nameOnCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Name on card'**
+  String get nameOnCard;
+
+  /// No description provided for @invalidCardholderName.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid cardholder name'**
+  String get invalidCardholderName;
+
+  /// No description provided for @cardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Card Number'**
+  String get cardNumber;
+
+  /// No description provided for @invalidCardNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a 16-digit test card number'**
+  String get invalidCardNumber;
+
+  /// No description provided for @expiryDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiry Date'**
+  String get expiryDate;
+
+  /// No description provided for @invalidExpiry.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid expiry'**
+  String get invalidExpiry;
+
+  /// No description provided for @cardExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Card has expired'**
+  String get cardExpired;
+
+  /// No description provided for @invalidCvv.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter 3 digits'**
+  String get invalidCvv;
+
+  /// No description provided for @demoCardNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'DEMO MODE: Use fictional test details only. This form does not connect to a bank, process real payments, or transmit or store card information.'**
+  String get demoCardNotice;
+
+  /// No description provided for @totalAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Total Amount'**
+  String get totalAmount;
+
+  /// No description provided for @payNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay Now'**
+  String get payNow;
+
+  /// No description provided for @bookingFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking failed'**
+  String get bookingFailed;
+
+  /// No description provided for @bookingConfirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Confirmation'**
+  String get bookingConfirmation;
+
+  /// No description provided for @bookingConfirmed.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Confirmed!'**
+  String get bookingConfirmed;
+
+  /// No description provided for @bookingSuccessMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Your parking reservation was completed successfully.'**
+  String get bookingSuccessMessage;
+
+  /// No description provided for @parkingQrCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Parking QR Code'**
+  String get parkingQrCode;
+
+  /// No description provided for @showQrCodeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Show this QR code when you arrive.'**
+  String get showQrCodeMessage;
+
+  /// No description provided for @bookingReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Booking Reference'**
+  String get bookingReference;
+
+  /// No description provided for @parkingLocation.
+  ///
+  /// In en, this message translates to:
+  /// **'Parking Location'**
+  String get parkingLocation;
+
+  /// No description provided for @priceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Price unavailable'**
+  String get priceUnavailable;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Home'**
+  String get backToHome;
+
+  /// No description provided for @myReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'My Reservations'**
+  String get myReservations;
+
+  /// No description provided for @unableToLoadReservations.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load reservations.'**
+  String get unableToLoadReservations;
+
+  /// No description provided for @noReservationsYet.
+  ///
+  /// In en, this message translates to:
+  /// **'No Reservations Yet'**
+  String get noReservationsYet;
+
+  /// No description provided for @reservationsWillAppearHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Your parking reservations will appear here.'**
+  String get reservationsWillAppearHere;
+
+  /// No description provided for @cancelReservationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reservation?'**
+  String get cancelReservationTitle;
+
+  /// No description provided for @cancelReservationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel this parking reservation? This demonstration will simulate a successful refund.'**
+  String get cancelReservationMessage;
+
+  /// No description provided for @keepReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep Reservation'**
+  String get keepReservation;
+
+  /// No description provided for @confirmCancellation.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Cancellation'**
+  String get confirmCancellation;
+
+  /// No description provided for @cancellationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Reservation cancelled. Demo refund processed.'**
+  String get cancellationSuccess;
+
+  /// No description provided for @cancellationFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancellation failed'**
+  String get cancellationFailed;
+
+  /// No description provided for @confirmedStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirmed'**
+  String get confirmedStatus;
+
+  /// No description provided for @cancelledStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelledStatus;
+
+  /// No description provided for @refundLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund'**
+  String get refundLabel;
+
+  /// No description provided for @demoRefundProcessed.
+  ///
+  /// In en, this message translates to:
+  /// **'Refund Processed (Demo)'**
+  String get demoRefundProcessed;
+
+  /// No description provided for @cancelReservation.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel Reservation'**
+  String get cancelReservation;
+
+  /// No description provided for @reservationCancelledNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'This reservation has been cancelled.'**
+  String get reservationCancelledNotice;
+
+  /// No description provided for @selectCurrency.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Currency'**
+  String get selectCurrency;
+
+  /// No description provided for @currencyUsdName.
+  ///
+  /// In en, this message translates to:
+  /// **'US Dollar (USD)'**
+  String get currencyUsdName;
+
+  /// No description provided for @currencySypName.
+  ///
+  /// In en, this message translates to:
+  /// **'Syrian Pound (SYP)'**
+  String get currencySypName;
+
+  /// No description provided for @currencyEurName.
+  ///
+  /// In en, this message translates to:
+  /// **'Euro (EUR)'**
+  String get currencyEurName;
 }
 
 class _AppLocalizationsDelegate

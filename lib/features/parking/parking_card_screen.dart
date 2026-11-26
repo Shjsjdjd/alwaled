@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'parking_confirmation_screen.dart';
 import '../reservations/booking_storage.dart';
 
@@ -31,10 +32,6 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
   bool _isProcessing = false;
   bool _hideCvv = true;
 
-  String get formattedDate {
-    return '${widget.selectedDate.day}/${widget.selectedDate.month}/${widget.selectedDate.year}';
-  }
-
   @override
   void dispose() {
     _nameController.dispose();
@@ -44,60 +41,80 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
     super.dispose();
   }
 
- Future<void> _processPayment() async {
-  if (!_formKey.currentState!.validate()) return;
+  Future<void> _processPayment(AppLocalizations l10n) async {
+    if (!_formKey.currentState!.validate()) return;
 
-  FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus();
 
-  setState(() {
-    _isProcessing = true;
-  });
+    setState(() {
+      _isProcessing = true;
+    });
 
-  // Demonstration only: no real payment is processed.
-  await Future.delayed(const Duration(seconds: 2));
+    try {
+      // Demonstration only: no real payment is processed.
+      await Future.delayed(const Duration(seconds: 2));
 
-  if (!mounted) return;
+      if (!mounted) return;
 
-  final bookingReference =
-      'SD-${DateTime.now().millisecondsSinceEpoch}';
+      final bookingReference =
+          'SD-${DateTime.now().millisecondsSinceEpoch}';
 
-  final booking = {
-    'bookingReference': bookingReference,
-    'location': widget.location['name'],
-    'date': widget.selectedDate.toIso8601String(),
-    'time': widget.selectedTime,
-    'price': widget.location['price'],
-    'paymentMethod': 'Credit / Debit Card',
-    'status': 'Confirmed',
-  };
+      final booking = {
+        'bookingReference': bookingReference,
+        'location': widget.location['name'],
+        'date': widget.selectedDate.toIso8601String(),
+        'time': widget.selectedTime,
+        'price': widget.location['price'],
+        'paymentMethod': 'Credit / Debit Card',
+        'status': 'Confirmed',
+      };
 
-  await BookingStorage.saveBooking(booking);
+      await BookingStorage.saveBooking(booking);
 
-  if (!mounted) return;
+      if (!mounted) return;
 
-  Navigator.of(context).pushReplacement(
-    MaterialPageRoute(
-      builder: (context) => ParkingConfirmationScreen(
-        location: widget.location,
-        selectedDate: widget.selectedDate,
-        selectedTime: widget.selectedTime,
-        bookingReference: bookingReference,
-      ),
-    ),
-  );
-}
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => ParkingConfirmationScreen(
+            location: widget.location,
+            selectedDate: widget.selectedDate,
+            selectedTime: widget.selectedTime,
+            bookingReference: bookingReference,
+          ),
+        ),
+      );
+    } catch (error) {
+      debugPrint('PAYMENT ERROR: $error');
+
+      if (!mounted) return;
+
+      setState(() {
+        _isProcessing = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('${l10n.bookingFailed}: $error'),
+          backgroundColor: Colors.red,
+          duration: const Duration(seconds: 6),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       appBar: AppBar(
         backgroundColor: AppTheme.ivory,
         foregroundColor: AppTheme.primaryGreen,
         elevation: 0,
-        title: const Text(
-          'Card Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.cardDetailsTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -108,9 +125,9 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Enter Card Information',
-                  style: TextStyle(
+                Text(
+                  l10n.enterCardInformation,
+                  style: const TextStyle(
                     fontSize: 23,
                     fontWeight: FontWeight.bold,
                     color: AppTheme.primaryGreen,
@@ -119,9 +136,9 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
                 const SizedBox(height: 8),
 
-                const Text(
-                  'Enter demonstration card details to complete your booking.',
-                  style: TextStyle(
+                Text(
+                  l10n.enterDemoCardDetails,
+                  style: const TextStyle(
                     fontSize: 14,
                     color: AppTheme.textMuted,
                   ),
@@ -145,17 +162,17 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.credit_card,
                             color: Colors.white,
                             size: 32,
                           ),
                           Text(
-                            'DEMO CARD',
-                            style: TextStyle(
+                            l10n.demoCard,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                               letterSpacing: 1.5,
@@ -170,6 +187,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                         _numberController.text.isEmpty
                             ? '•••• •••• •••• ••••'
                             : _numberController.text,
+                        textDirection: TextDirection.ltr,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 19,
@@ -181,7 +199,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
                       Text(
                         _nameController.text.isEmpty
-                            ? 'CARDHOLDER NAME'
+                            ? l10n.cardholderName.toUpperCase()
                             : _nameController.text.toUpperCase(),
                         style: const TextStyle(
                           color: Colors.white,
@@ -195,19 +213,19 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
                 const SizedBox(height: 28),
 
-                _fieldLabel('Cardholder Name'),
+                _fieldLabel(l10n.cardholderName),
 
                 TextFormField(
                   controller: _nameController,
                   textCapitalization: TextCapitalization.characters,
                   decoration: _inputDecoration(
-                    hint: 'Name on card',
+                    hint: l10n.nameOnCard,
                     icon: Icons.person_outline,
                   ),
                   onChanged: (_) => setState(() {}),
                   validator: (value) {
                     if (value == null || value.trim().length < 3) {
-                      return 'Enter a valid cardholder name';
+                      return l10n.invalidCardholderName;
                     }
                     return null;
                   },
@@ -215,11 +233,12 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
                 const SizedBox(height: 20),
 
-                _fieldLabel('Card Number'),
+                _fieldLabel(l10n.cardNumber),
 
                 TextFormField(
                   controller: _numberController,
                   keyboardType: TextInputType.number,
+                  textDirection: TextDirection.ltr,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     LengthLimitingTextInputFormatter(16),
@@ -234,7 +253,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                     final digits = value?.replaceAll(' ', '') ?? '';
 
                     if (digits.length != 16) {
-                      return 'Enter a 16-digit test card number';
+                      return l10n.invalidCardNumber;
                     }
 
                     return null;
@@ -244,16 +263,18 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                 const SizedBox(height: 20),
 
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _fieldLabel('Expiry Date'),
+                          _fieldLabel(l10n.expiryDate),
 
                           TextFormField(
                             controller: _expiryController,
                             keyboardType: TextInputType.number,
+                            textDirection: TextDirection.ltr,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(4),
@@ -267,7 +288,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                               if (value == null ||
                                   !RegExp(r'^(0[1-9]|1[0-2])/\d{2}$')
                                       .hasMatch(value)) {
-                                return 'Invalid expiry';
+                                return l10n.invalidExpiry;
                               }
 
                               final parts = value.split('/');
@@ -280,7 +301,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                               if (!expiry.isAfter(
                                 DateTime(now.year, now.month),
                               )) {
-                                return 'Card has expired';
+                                return l10n.cardExpired;
                               }
 
                               return null;
@@ -301,6 +322,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                           TextFormField(
                             controller: _cvvController,
                             keyboardType: TextInputType.number,
+                            textDirection: TextDirection.ltr,
                             obscureText: _hideCvv,
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -325,7 +347,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                             ),
                             validator: (value) {
                               if (value == null || value.length != 3) {
-                                return 'Enter 3 digits';
+                                return l10n.invalidCvv;
                               }
                               return null;
                             },
@@ -344,18 +366,18 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                     color: const Color(0xFFEAE3D2),
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Row(
+                  child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.info_outline,
                         color: AppTheme.primaryGreen,
                       ),
-                      SizedBox(width: 10),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Text(
-                          'DEMO MODE: Use fictional test details only. This form does not connect to a bank, process real payments, or transmit or store card information.',
-                          style: TextStyle(
+                          l10n.demoCardNotice,
+                          style: const TextStyle(
                             fontSize: 12,
                             height: 1.5,
                             color: AppTheme.textDark,
@@ -376,21 +398,27 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                     border: Border.all(color: AppTheme.border),
                   ),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
-                        'Total Amount',
-                        style: TextStyle(
-                          color: AppTheme.textMuted,
-                          fontSize: 14,
+                      Expanded(
+                        child: Text(
+                          l10n.totalAmount,
+                          style: const TextStyle(
+                            color: AppTheme.textMuted,
+                            fontSize: 14,
+                          ),
                         ),
                       ),
-                      Text(
-                        widget.location['price'],
-                        style: const TextStyle(
-                          color: AppTheme.primaryGreen,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 19,
+                      const SizedBox(width: 10),
+                      Flexible(
+                        child: Text(
+                          widget.location['price']?.toString() ?? '',
+                          textAlign: TextAlign.end,
+                          softWrap: true,
+                          style: const TextStyle(
+                            color: AppTheme.primaryGreen,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 19,
+                          ),
                         ),
                       ),
                     ],
@@ -403,7 +431,9 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                   width: double.infinity,
                   height: 55,
                   child: ElevatedButton(
-                    onPressed: _isProcessing ? null : _processPayment,
+                    onPressed: _isProcessing
+                        ? null
+                        : () => _processPayment(l10n),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primaryGreen,
                       foregroundColor: Colors.white,
@@ -422,9 +452,9 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
                               strokeWidth: 2,
                             ),
                           )
-                        : const Text(
-                            'Pay Now',
-                            style: TextStyle(
+                        : Text(
+                            l10n.payNow,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
@@ -525,7 +555,6 @@ class _ExpiryDateFormatter extends TextInputFormatter {
     TextEditingValue newValue,
   ) {
     final digits = newValue.text.replaceAll('/', '');
-
     final buffer = StringBuffer();
 
     for (int i = 0; i < digits.length; i++) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'parking_payment_screen.dart';
 
 class ParkingReservationScreen extends StatelessWidget {
@@ -20,15 +21,17 @@ class ParkingReservationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       appBar: AppBar(
         backgroundColor: AppTheme.ivory,
         foregroundColor: AppTheme.primaryGreen,
         elevation: 0,
-        title: const Text(
-          'Reservation Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.reservationDetailsTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -37,9 +40,9 @@ class ParkingReservationScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Review Your Booking',
-                style: TextStyle(
+              Text(
+                l10n.reviewYourBooking,
+                style: const TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.primaryGreen,
@@ -48,9 +51,9 @@ class ParkingReservationScreen extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              const Text(
-                'Check your parking reservation details before proceeding.',
-                style: TextStyle(
+              Text(
+                l10n.reviewBookingDescription,
+                style: const TextStyle(
                   fontSize: 14,
                   color: AppTheme.textMuted,
                 ),
@@ -78,7 +81,7 @@ class ParkingReservationScreen extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     Text(
-                      location['name'],
+                      location['name']?.toString() ?? '',
                       style: const TextStyle(
                         fontSize: 21,
                         fontWeight: FontWeight.bold,
@@ -89,7 +92,7 @@ class ParkingReservationScreen extends StatelessWidget {
                     const SizedBox(height: 8),
 
                     Text(
-                      location['distance'],
+                      location['distance']?.toString() ?? '',
                       style: const TextStyle(
                         color: AppTheme.textMuted,
                         fontSize: 14,
@@ -104,7 +107,7 @@ class ParkingReservationScreen extends StatelessWidget {
 
                     _detailRow(
                       Icons.calendar_month_outlined,
-                      'Date',
+                      l10n.dateLabel,
                       formattedDate,
                     ),
 
@@ -112,7 +115,7 @@ class ParkingReservationScreen extends StatelessWidget {
 
                     _detailRow(
                       Icons.access_time,
-                      'Time',
+                      l10n.timeLabel,
                       selectedTime,
                     ),
 
@@ -120,16 +123,16 @@ class ParkingReservationScreen extends StatelessWidget {
 
                     _detailRow(
                       Icons.location_on_outlined,
-                      'Location',
-                      location['name'],
+                      l10n.locationLabel,
+                      location['name']?.toString() ?? '',
                     ),
 
                     const SizedBox(height: 18),
 
                     _detailRow(
                       Icons.payments_outlined,
-                      'Price',
-                      location['price'],
+                      l10n.priceLabel,
+                      location['price']?.toString() ?? '',
                     ),
                   ],
                 ),
@@ -144,18 +147,18 @@ class ParkingReservationScreen extends StatelessWidget {
                   color: const Color(0xFFEAE3D2),
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Row(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.info_outline,
                       color: AppTheme.primaryGreen,
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Your booking is not confirmed yet. Continue to the payment step to complete the reservation.',
-                        style: TextStyle(
+                        l10n.bookingNotConfirmedMessage,
+                        style: const TextStyle(
                           color: AppTheme.textDark,
                           fontSize: 13,
                           height: 1.5,
@@ -173,17 +176,17 @@ class ParkingReservationScreen extends StatelessWidget {
                 height: 55,
                 child: ElevatedButton(
                   onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ParkingPaymentScreen(
-        location: location,
-        selectedDate: selectedDate,
-        selectedTime: selectedTime,
-      ),
-    ),
-  );
-},
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ParkingPaymentScreen(
+                          location: location,
+                          selectedDate: selectedDate,
+                          selectedTime: selectedTime,
+                        ),
+                      ),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryGreen,
                     foregroundColor: Colors.white,
@@ -192,9 +195,9 @@ class ParkingReservationScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Continue to Payment',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.continueToPayment,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -210,6 +213,7 @@ class ParkingReservationScreen extends StatelessWidget {
 
   Widget _detailRow(IconData icon, String label, String value) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Icon(
           icon,
@@ -231,6 +235,7 @@ class ParkingReservationScreen extends StatelessWidget {
           child: Text(
             value,
             textAlign: TextAlign.end,
+            softWrap: true,
             style: const TextStyle(
               color: AppTheme.textDark,
               fontSize: 14,

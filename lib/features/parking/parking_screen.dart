@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'parking_details_screen.dart';
-
 
 class ParkingScreen extends StatefulWidget {
   const ParkingScreen({super.key});
@@ -15,33 +16,44 @@ class _ParkingScreenState extends State<ParkingScreen> {
 
   bool _showMap = false;
 
-  final List<Map<String, dynamic>> _parkingLocations = [
-    {
-      'name': 'Old City Parking A',
-      'distance': '350 m from Umayyad Mosque',
-      'price': 'SYP 2,000 / hour (sample)',
-      'status': 'Available',
-      'available': true,
-    },
-    {
-      'name': 'Citadel Parking B',
-      'distance': '600 m from Citadel',
-      'price': 'SYP 1,500 / hour (sample)',
-      'status': 'Limited',
-      'available': false,
-    },
-  ];
+  List<Map<String, dynamic>> _getParkingLocations(
+      AppLocalizations l10n) {
+    return [
+      {
+        'name': l10n.oldCityParking,
+        'distance': l10n.distanceUmayyad,
+        'price': l10n.parkingPriceOldCity,
+        'status': l10n.available,
+        'available': true,
+      },
+      {
+        'name': l10n.citadelParking,
+        'distance': l10n.distanceCitadel,
+        'price': l10n.parkingPriceCitadel,
+        'status': l10n.limitedAvailability,
+        'available': false,
+      },
+    ];
+  }
 
-  List<Map<String, dynamic>> get _filteredLocations {
+  List<Map<String, dynamic>> _filteredLocations(
+      AppLocalizations l10n) {
+    final locations = _getParkingLocations(l10n);
     final query = _searchController.text.toLowerCase();
 
     if (query.isEmpty) {
-      return _parkingLocations;
+      return locations;
     }
 
-    return _parkingLocations.where((location) {
-      return location['name'].toString().toLowerCase().contains(query) ||
-          location['distance'].toString().toLowerCase().contains(query);
+    return locations.where((location) {
+      return location['name']
+              .toString()
+              .toLowerCase()
+              .contains(query) ||
+          location['distance']
+              .toString()
+              .toLowerCase()
+              .contains(query);
     }).toList();
   }
 
@@ -53,6 +65,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       body: SafeArea(
@@ -64,15 +78,15 @@ class _ParkingScreenState extends State<ParkingScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeader(),
+                    _buildHeader(l10n),
                     const SizedBox(height: 28),
-                    _buildSearchField(),
+                    _buildSearchField(l10n),
                     const SizedBox(height: 24),
-                    _buildViewSelector(),
+                    _buildViewSelector(l10n),
                     const SizedBox(height: 28),
                     Text(
-                      'Near: Damascus Old City',
-                      style: TextStyle(
+                      l10n.parkingNearDamascus,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: AppTheme.textMuted,
                         fontWeight: FontWeight.w500,
@@ -80,9 +94,9 @@ class _ParkingScreenState extends State<ParkingScreen> {
                     ),
                     const SizedBox(height: 16),
                     if (_showMap)
-                      _buildIllustrativeMap()
+                      _buildIllustrativeMap(l10n)
                     else
-                      _buildParkingList(),
+                      _buildParkingList(l10n),
                   ],
                 ),
               ),
@@ -93,13 +107,13 @@ class _ParkingScreenState extends State<ParkingScreen> {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(AppLocalizations l10n) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Find Parking',
-          style: TextStyle(
+          l10n.findParking,
+          style: const TextStyle(
             fontSize: 32,
             fontWeight: FontWeight.bold,
             color: AppTheme.primaryGreen,
@@ -118,17 +132,17 @@ class _ParkingScreenState extends State<ParkingScreen> {
     );
   }
 
-  Widget _buildSearchField() {
+  Widget _buildSearchField(AppLocalizations l10n) {
     return TextField(
       controller: _searchController,
       onChanged: (_) => setState(() {}),
       decoration: InputDecoration(
-        hintText: 'Search parking near attractions...',
-        hintStyle: TextStyle(
+        hintText: l10n.searchParking,
+        hintStyle: const TextStyle(
           color: AppTheme.textMuted,
           fontSize: 15,
         ),
-        prefixIcon: Icon(
+        prefixIcon: const Icon(
           Icons.search,
           color: AppTheme.textMuted,
           size: 27,
@@ -147,7 +161,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
+          borderSide: const BorderSide(
             color: AppTheme.primaryGreen,
             width: 1.5,
           ),
@@ -156,7 +170,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
     );
   }
 
-  Widget _buildViewSelector() {
+  Widget _buildViewSelector(AppLocalizations l10n) {
     return Container(
       height: 48,
       padding: const EdgeInsets.all(4),
@@ -166,8 +180,8 @@ class _ParkingScreenState extends State<ParkingScreen> {
       ),
       child: Row(
         children: [
-          _buildSelectorButton('List', false),
-          _buildSelectorButton('Map', true),
+          _buildSelectorButton(l10n.listView, false),
+          _buildSelectorButton(l10n.mapView, true),
         ],
       ),
     );
@@ -185,7 +199,9 @@ class _ParkingScreenState extends State<ParkingScreen> {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: selected ? AppTheme.primaryGreen : Colors.transparent,
+            color: selected
+                ? AppTheme.primaryGreen
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(25),
           ),
           alignment: Alignment.center,
@@ -202,16 +218,16 @@ class _ParkingScreenState extends State<ParkingScreen> {
     );
   }
 
-  Widget _buildParkingList() {
-    final locations = _filteredLocations;
+  Widget _buildParkingList(AppLocalizations l10n) {
+    final locations = _filteredLocations(l10n);
 
     if (locations.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(30),
         child: Center(
           child: Text(
-            'No parking locations found.',
-            style: TextStyle(
+            l10n.noParkingFound,
+            style: const TextStyle(
               color: AppTheme.textMuted,
               fontSize: 15,
             ),
@@ -248,7 +264,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
         children: [
           Text(
             location['name'],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppTheme.textDark,
@@ -257,7 +273,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
           const SizedBox(height: 8),
           Text(
             location['distance'],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: AppTheme.textMuted,
             ),
@@ -265,7 +281,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
           const SizedBox(height: 14),
           Text(
             location['price'],
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: AppTheme.primaryGreen,
               fontWeight: FontWeight.w500,
@@ -298,16 +314,16 @@ class _ParkingScreenState extends State<ParkingScreen> {
                 ),
               ),
               ElevatedButton(
-               onPressed: () {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => ParkingDetailsScreen(
-        location: location,
-      ),
-    ),
-  );
-},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ParkingDetailsScreen(
+                        location: location,
+                      ),
+                    ),
+                  );
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.primaryGreen,
                   foregroundColor: Colors.white,
@@ -320,9 +336,9 @@ class _ParkingScreenState extends State<ParkingScreen> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
-                child: const Text(
-                  'View details',
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.viewDetails,
+                  style: const TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
@@ -335,7 +351,7 @@ class _ParkingScreenState extends State<ParkingScreen> {
     );
   }
 
-  Widget _buildIllustrativeMap() {
+  Widget _buildIllustrativeMap(AppLocalizations l10n) {
     return Container(
       height: 230,
       width: double.infinity,
@@ -386,12 +402,12 @@ class _ParkingScreenState extends State<ParkingScreen> {
             top: 50,
             child: _buildMapMarker(AppTheme.gold),
           ),
-          Positioned(
-            left: 16,
+          PositionedDirectional(
+            start: 16,
             bottom: 14,
             child: Text(
-              'Illustrative map, not live data',
-              style: TextStyle(
+              l10n.illustrativeMapNotice,
+              style: const TextStyle(
                 fontSize: 13,
                 color: AppTheme.textMuted,
                 fontWeight: FontWeight.w500,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'parking_reservation_screen.dart';
 
 class ParkingDetailsScreen extends StatefulWidget {
@@ -53,6 +54,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final location = widget.location;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppTheme.ivory,
@@ -60,9 +62,9 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
         backgroundColor: AppTheme.ivory,
         foregroundColor: AppTheme.primaryGreen,
         elevation: 0,
-        title: const Text(
-          'Parking Details',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.parkingDetails,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -71,24 +73,24 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildLocationCard(location),
+              _buildLocationCard(location, l10n),
               const SizedBox(height: 30),
 
-              _buildSectionTitle('Select Date'),
+              _buildSectionTitle(l10n.selectDate),
               const SizedBox(height: 14),
               _buildDateSelector(),
 
               const SizedBox(height: 30),
 
-              _buildSectionTitle('Available Time Slots'),
+              _buildSectionTitle(l10n.availableTimeSlots),
               const SizedBox(height: 14),
               _buildTimeSlots(),
 
               const SizedBox(height: 30),
 
-              _buildSectionTitle('Parking Summary'),
+              _buildSectionTitle(l10n.parkingSummary),
               const SizedBox(height: 14),
-              _buildSummary(location),
+              _buildSummary(location, l10n),
 
               const SizedBox(height: 28),
 
@@ -96,20 +98,21 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-               onPressed: selectedTime == null
-    ? null
-    : () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ParkingReservationScreen(
-              location: location,
-              selectedDate: selectedDate,
-              selectedTime: selectedTime!,
-            ),
-          ),
-        );
-      },
+                  onPressed: selectedTime == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  ParkingReservationScreen(
+                                location: location,
+                                selectedDate: selectedDate,
+                                selectedTime: selectedTime!,
+                              ),
+                            ),
+                          );
+                        },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryGreen,
                     foregroundColor: Colors.white,
@@ -119,9 +122,9 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Continue',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.continueButton,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -135,7 +138,10 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
     );
   }
 
-  Widget _buildLocationCard(Map<String, dynamic> location) {
+  Widget _buildLocationCard(
+    Map<String, dynamic> location,
+    AppLocalizations l10n,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(22),
@@ -200,7 +206,7 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            'Status: ${location['status']}',
+            '${l10n.statusLabel}: ${location['status']}',
             style: TextStyle(
               color: AppTheme.textMuted,
               fontWeight: FontWeight.w500,
@@ -313,7 +319,10 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
     );
   }
 
-  Widget _buildSummary(Map<String, dynamic> location) {
+  Widget _buildSummary(
+    Map<String, dynamic> location,
+    AppLocalizations l10n,
+  ) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(18),
@@ -324,13 +333,22 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
       ),
       child: Column(
         children: [
-          _summaryRow('Parking location', location['name']),
+          _summaryRow(
+            l10n.parkingLocationLabel,
+            location['name'],
+          ),
           const SizedBox(height: 14),
-          _summaryRow('Date', formattedDate),
+          _summaryRow(l10n.dateLabel, formattedDate),
           const SizedBox(height: 14),
-          _summaryRow('Time', selectedTime ?? 'Not selected'),
+          _summaryRow(
+            l10n.timeLabel,
+            selectedTime ?? l10n.notSelected,
+          ),
           const SizedBox(height: 14),
-          _summaryRow('Price', location['price']),
+          _summaryRow(
+            l10n.priceLabel,
+            location['price'],
+          ),
         ],
       ),
     );

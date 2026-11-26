@@ -1,7 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/localization/app_language.dart';
+import '../../core/currency/app_currency.dart';
 import '../../l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -117,6 +119,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
         );
       },
     );
+  }
+
+  void _showCurrencyDialog() {
+    showDialog(
+      context: context,
+      builder: (dialogContext) {
+        final l10n = AppLocalizations.of(dialogContext)!;
+
+        return AlertDialog(
+          title: Text(l10n.selectCurrency),
+          content: ValueListenableBuilder<String>(
+            valueListenable: AppCurrency.currency,
+            builder: (context, currentCurrency, child) {
+              return RadioGroup<String>(
+                groupValue: currentCurrency,
+                onChanged: (value) async {
+                  if (value == null) return;
+
+                  await AppCurrency.changeCurrency(value);
+
+                  if (!dialogContext.mounted) return;
+
+                  Navigator.pop(dialogContext);
+
+                  if (!mounted) return;
+
+                  _showMessage(
+                    '${l10n.currency}: ${_currencyName(value, l10n)}',
+                  );
+                },
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    RadioListTile<String>(
+                      title: Text(l10n.currencyUsdName),
+                      value: 'USD',
+                    ),
+                    RadioListTile<String>(
+                      title: Text(l10n.currencySypName),
+                      value: 'SYP',
+                    ),
+                    RadioListTile<String>(
+                      title: Text(l10n.currencyEurName),
+                      value: 'EUR',
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  String _currencyName(String code, AppLocalizations l10n) {
+    switch (code) {
+      case 'SYP':
+        return l10n.currencySypName;
+      case 'EUR':
+        return l10n.currencyEurName;
+      default:
+        return l10n.currencyUsdName;
+    }
   }
 
   void _showMessage(String message) {
@@ -241,11 +307,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                     _buildDivider(),
 
-                    _buildOption(
-                      title: l10n.currencyUsd,
-                      onTap: () {
-                        _showMessage(
-                          l10n.currencySettingsNotImplemented,
+                    ValueListenableBuilder<String>(
+                      valueListenable: AppCurrency.currency,
+                      builder: (context, currency, child) {
+                        return _buildOption(
+                          title:
+                              '${l10n.currency}: ${_currencyName(currency, l10n)}',
+                          onTap: _showCurrencyDialog,
                         );
                       },
                     ),
@@ -255,9 +323,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _buildOption(
                       title: l10n.settings,
                       onTap: () {
-                        _showMessage(
-                          l10n.settingsNotImplemented,
-                        );
+                        _showMessage(l10n.settingsNotImplemented);
                       },
                     ),
                   ],

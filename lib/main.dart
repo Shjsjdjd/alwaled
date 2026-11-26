@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'core/currency/app_currency.dart';
 import 'core/routing/main_navigation.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/app_language.dart';
@@ -9,6 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLanguage.loadLanguage();
+  await AppCurrency.loadCurrency();
 
   runApp(const SyriaDiscoverApp());
 }

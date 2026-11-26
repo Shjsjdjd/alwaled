@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import '../../core/theme/app_theme.dart';
+
+import '../../l10n/app_localizations.dart';
+
+const Color _primaryGreen = Color(0xFF245548);
+const Color _background = Color(0xFFF8F4EB);
+const Color _textDark = Color(0xFF242820);
+const Color _textGray = Color(0xFF77766E);
 
 class ParkingConfirmationScreen extends StatelessWidget {
   final Map<String, dynamic> location;
@@ -18,203 +24,260 @@ class ParkingConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final locationName =
-        location['name']?.toString() ?? 'Parking Location';
+        location['name']?.toString() ?? l10n.priceUnavailable;
 
-    final price =
-        location['price']?.toString() ?? 'Price unavailable';
-
-    final formattedDate =
-        '${selectedDate.day.toString().padLeft(2, '0')}/'
-        '${selectedDate.month.toString().padLeft(2, '0')}/'
-        '${selectedDate.year}';
+    final price = location['price']?.toString() ?? '';
 
     return Scaffold(
-      backgroundColor: AppTheme.ivory,
+      backgroundColor: _background,
       appBar: AppBar(
-        title: const Text('Booking Confirmation'),
-        backgroundColor: AppTheme.ivory,
-        foregroundColor: AppTheme.textDark,
+        title: Text(l10n.bookingConfirmation),
+        backgroundColor: _primaryGreen,
+        foregroundColor: Colors.white,
         elevation: 0,
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              const SizedBox(height: 20),
 
-            const Icon(
-              Icons.check_circle,
-              color: AppTheme.primaryGreen,
-              size: 72,
-            ),
-
-            const SizedBox(height: 16),
-
-            const Text(
-              'Booking Confirmed!',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryGreen,
+              Container(
+                width: 76,
+                height: 76,
+                decoration: BoxDecoration(
+                  color: _primaryGreen.withValues(alpha: 0.12),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.check_circle,
+                  color: _primaryGreen,
+                  size: 52,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 8),
+              const SizedBox(height: 18),
 
-            const Text(
-              'Your parking reservation was completed successfully.',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: AppTheme.textMuted,
+              Text(
+                l10n.bookingConfirmed,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: _textDark,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
 
-            const SizedBox(height: 28),
+              const SizedBox(height: 8),
 
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: AppTheme.white,
-                borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: AppTheme.border),
+              Text(
+                l10n.bookingSuccessMessage,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: _textGray,
+                  fontSize: 14,
+                ),
               ),
-              child: Column(
-                children: [
-                  const Text(
-                    'Your Parking QR Code',
-                    style: TextStyle(
-                      fontSize: 18,
+
+              const SizedBox(height: 28),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(22),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(
+                    color: _primaryGreen.withValues(alpha: 0.15),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      l10n.parkingQrCode,
+                      style: const TextStyle(
+                        color: _textDark,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    Text(
+                      l10n.showQrCodeMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: _textGray,
+                        fontSize: 13,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    QrImageView(
+                      data: bookingReference,
+                      version: QrVersions.auto,
+                      size: 190,
+                      backgroundColor: Colors.white,
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    Text(
+                      l10n.bookingReference,
+                      style: const TextStyle(
+                        color: _textGray,
+                        fontSize: 12,
+                      ),
+                    ),
+
+                    const SizedBox(height: 5),
+
+                    SelectableText(
+                      bookingReference,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: _primaryGreen,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.bookingSummary,
+                      style: const TextStyle(
+                        color: _textDark,
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    const SizedBox(height: 18),
+
+                    _buildDetail(
+                      l10n.parkingLocation,
+                      locationName,
+                    ),
+
+                    const Divider(height: 24),
+
+                    _buildDetail(
+                      l10n.dateLabel,
+                      '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
+                    ),
+
+                    const Divider(height: 24),
+
+                    _buildDetail(
+                      l10n.timeLabel,
+                      selectedTime,
+                    ),
+
+                    const Divider(height: 24),
+
+                    _buildDetail(
+                      l10n.priceLabel,
+                      price.isEmpty ? l10n.priceUnavailable : price,
+                    ),
+
+                    const Divider(height: 24),
+
+                    _buildDetail(
+                      l10n.paymentMethod,
+                      l10n.creditDebitCard,
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 28),
+
+              SizedBox(
+                width: double.infinity,
+                height: 54,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).popUntil(
+                      (route) => route.isFirst,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _primaryGreen,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: Text(
+                    l10n.backToHome,
+                    style: const TextStyle(
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppTheme.textDark,
                     ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  QrImageView(
-                    data: bookingReference,
-                    version: QrVersions.auto,
-                    size: 190,
-                    backgroundColor: Colors.white,
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  const Text(
-                    'Show this QR code when you arrive.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppTheme.textMuted,
-                      fontSize: 13,
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-
-                  const Divider(),
-
-                  const SizedBox(height: 12),
-
-                  _buildDetail(
-                    'Booking Reference',
-                    bookingReference,
-                  ),
-
-                  _buildDetail(
-                    'Parking Location',
-                    locationName,
-                  ),
-
-                  _buildDetail(
-                    'Date',
-                    formattedDate,
-                  ),
-
-                  _buildDetail(
-                    'Time',
-                    selectedTime,
-                  ),
-
-                  _buildDetail(
-                    'Price',
-                    price,
-                  ),
-
-                  _buildDetail(
-                    'Payment Method',
-                    'Credit / Debit Card',
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            SizedBox(
-              width: double.infinity,
-              height: 54,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .popUntil((route) => route.isFirst);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppTheme.primaryGreen,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-                child: const Text(
-                  'Back to Home',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 20),
-          ],
+              const SizedBox(height: 15),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _buildDetail(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 9),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: const TextStyle(
-                color: AppTheme.textMuted,
-                fontSize: 13,
-              ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: const TextStyle(
+              color: _textGray,
+              fontSize: 13,
             ),
           ),
-          const SizedBox(width: 12),
-          Flexible(
-            child: Text(
-              value,
-              textAlign: TextAlign.right,
-              style: const TextStyle(
-                color: AppTheme.textDark,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-              ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          flex: 3,
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            softWrap: true,
+            style: const TextStyle(
+              color: _textDark,
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

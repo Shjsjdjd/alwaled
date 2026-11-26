@@ -308,4 +308,282 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get itineraryPlaceholder =>
       'Your personalized itinerary will appear here once the AI planning service is connected.';
+
+  @override
+  String get findParking => 'Find Parking';
+
+  @override
+  String get searchParking => 'Search parking near attractions...';
+
+  @override
+  String get parkingNearDamascus => 'Near: Damascus Old City';
+
+  @override
+  String get listView => 'List';
+
+  @override
+  String get mapView => 'Map';
+
+  @override
+  String get noParkingFound => 'No parking locations found.';
+
+  @override
+  String get oldCityParking => 'Old City Parking A';
+
+  @override
+  String get citadelParking => 'Citadel Parking B';
+
+  @override
+  String get distanceUmayyad => '350 m from Umayyad Mosque';
+
+  @override
+  String get distanceCitadel => '600 m from Citadel';
+
+  @override
+  String get parkingPriceOldCity => 'SYP 2,000 / hour (sample)';
+
+  @override
+  String get parkingPriceCitadel => 'SYP 1,500 / hour (sample)';
+
+  @override
+  String get available => 'Available';
+
+  @override
+  String get limitedAvailability => 'Limited';
+
+  @override
+  String get viewDetails => 'View details';
+
+  @override
+  String get illustrativeMapNotice => 'Illustrative map, not live data';
+
+  @override
+  String get parkingDetails => 'Parking Details';
+
+  @override
+  String get selectDate => 'Select Date';
+
+  @override
+  String get availableTimeSlots => 'Available Time Slots';
+
+  @override
+  String get parkingSummary => 'Parking Summary';
+
+  @override
+  String get continueButton => 'Continue';
+
+  @override
+  String get statusLabel => 'Status';
+
+  @override
+  String get parkingLocationLabel => 'Parking location';
+
+  @override
+  String get dateLabel => 'Date';
+
+  @override
+  String get timeLabel => 'Time';
+
+  @override
+  String get priceLabel => 'Price';
+
+  @override
+  String get notSelected => 'Not selected';
+
+  @override
+  String get reservationDetailsTitle => 'Reservation Details';
+
+  @override
+  String get reviewYourBooking => 'Review Your Booking';
+
+  @override
+  String get reviewBookingDescription =>
+      'Check your parking reservation details before proceeding.';
+
+  @override
+  String get locationLabel => 'Location';
+
+  @override
+  String get bookingNotConfirmedMessage =>
+      'Your booking is not confirmed yet. Continue to the payment step to complete the reservation.';
+
+  @override
+  String get continueToPayment => 'Continue to Payment';
+
+  @override
+  String get paymentTitle => 'Payment';
+
+  @override
+  String get paymentMethod => 'Payment Method';
+
+  @override
+  String get choosePaymentMethod =>
+      'Choose your payment method to complete the reservation.';
+
+  @override
+  String get creditDebitCard => 'Credit / Debit Card';
+
+  @override
+  String get supportedCards => 'Visa, Mastercard and other cards';
+
+  @override
+  String get bookingSummary => 'Booking Summary';
+
+  @override
+  String get parkingLabel => 'Parking';
+
+  @override
+  String get totalLabel => 'Total';
+
+  @override
+  String get demoPaymentNotice =>
+      'Demonstration payment only. No real money will be charged.';
+
+  @override
+  String get continueToCardDetails => 'Continue to Card Details';
+
+  @override
+  String get cardDetailsTitle => 'Card Details';
+
+  @override
+  String get enterCardInformation => 'Enter Card Information';
+
+  @override
+  String get enterDemoCardDetails =>
+      'Enter demonstration card details to complete your booking.';
+
+  @override
+  String get demoCard => 'DEMO CARD';
+
+  @override
+  String get cardholderName => 'Cardholder Name';
+
+  @override
+  String get nameOnCard => 'Name on card';
+
+  @override
+  String get invalidCardholderName => 'Enter a valid cardholder name';
+
+  @override
+  String get cardNumber => 'Card Number';
+
+  @override
+  String get invalidCardNumber => 'Enter a 16-digit test card number';
+
+  @override
+  String get expiryDate => 'Expiry Date';
+
+  @override
+  String get invalidExpiry => 'Invalid expiry';
+
+  @override
+  String get cardExpired => 'Card has expired';
+
+  @override
+  String get invalidCvv => 'Enter 3 digits';
+
+  @override
+  String get demoCardNotice =>
+      'DEMO MODE: Use fictional test details only. This form does not connect to a bank, process real payments, or transmit or store card information.';
+
+  @override
+  String get totalAmount => 'Total Amount';
+
+  @override
+  String get payNow => 'Pay Now';
+
+  @override
+  String get bookingFailed => 'Booking failed';
+
+  @override
+  String get bookingConfirmation => 'Booking Confirmation';
+
+  @override
+  String get bookingConfirmed => 'Booking Confirmed!';
+
+  @override
+  String get bookingSuccessMessage =>
+      'Your parking reservation was completed successfully.';
+
+  @override
+  String get parkingQrCode => 'Your Parking QR Code';
+
+  @override
+  String get showQrCodeMessage => 'Show this QR code when you arrive.';
+
+  @override
+  String get bookingReference => 'Booking Reference';
+
+  @override
+  String get parkingLocation => 'Parking Location';
+
+  @override
+  String get priceUnavailable => 'Price unavailable';
+
+  @override
+  String get backToHome => 'Back to Home';
+
+  @override
+  String get myReservations => 'My Reservations';
+
+  @override
+  String get unableToLoadReservations => 'Unable to load reservations.';
+
+  @override
+  String get noReservationsYet => 'No Reservations Yet';
+
+  @override
+  String get reservationsWillAppearHere =>
+      'Your parking reservations will appear here.';
+
+  @override
+  String get cancelReservationTitle => 'Cancel Reservation?';
+
+  @override
+  String get cancelReservationMessage =>
+      'Are you sure you want to cancel this parking reservation? This demonstration will simulate a successful refund.';
+
+  @override
+  String get keepReservation => 'Keep Reservation';
+
+  @override
+  String get confirmCancellation => 'Confirm Cancellation';
+
+  @override
+  String get cancellationSuccess =>
+      'Reservation cancelled. Demo refund processed.';
+
+  @override
+  String get cancellationFailed => 'Cancellation failed';
+
+  @override
+  String get confirmedStatus => 'Confirmed';
+
+  @override
+  String get cancelledStatus => 'Cancelled';
+
+  @override
+  String get refundLabel => 'Refund';
+
+  @override
+  String get demoRefundProcessed => 'Refund Processed (Demo)';
+
+  @override
+  String get cancelReservation => 'Cancel Reservation';
+
+  @override
+  String get reservationCancelledNotice =>
+      'This reservation has been cancelled.';
+
+  @override
+  String get selectCurrency => 'Select Currency';
+
+  @override
+  String get currencyUsdName => 'US Dollar (USD)';
+
+  @override
+  String get currencySypName => 'Syrian Pound (SYP)';
+
+  @override
+  String get currencyEurName => 'Euro (EUR)';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'parking_card_screen.dart';
 
 class ParkingPaymentScreen extends StatelessWidget {
@@ -20,15 +21,17 @@ class ParkingPaymentScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       appBar: AppBar(
         backgroundColor: AppTheme.ivory,
         foregroundColor: AppTheme.primaryGreen,
         elevation: 0,
-        title: const Text(
-          'Payment',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          l10n.paymentTitle,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: SafeArea(
@@ -37,9 +40,9 @@ class ParkingPaymentScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Payment Method',
-                style: TextStyle(
+              Text(
+                l10n.paymentMethod,
+                style: const TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.primaryGreen,
@@ -48,9 +51,9 @@ class ParkingPaymentScreen extends StatelessWidget {
 
               const SizedBox(height: 8),
 
-              const Text(
-                'Choose your payment method to complete the reservation.',
-                style: TextStyle(
+              Text(
+                l10n.choosePaymentMethod,
+                style: const TextStyle(
                   color: AppTheme.textMuted,
                   fontSize: 14,
                 ),
@@ -68,30 +71,30 @@ class ParkingPaymentScreen extends StatelessWidget {
                     width: 2,
                   ),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.credit_card,
                       color: AppTheme.primaryGreen,
                       size: 32,
                     ),
-                    SizedBox(width: 15),
+                    const SizedBox(width: 15),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Credit / Debit Card',
-                            style: TextStyle(
+                            l10n.creditDebitCard,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: AppTheme.textDark,
                               fontSize: 16,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
-                            'Visa, Mastercard and other cards',
-                            style: TextStyle(
+                            l10n.supportedCards,
+                            style: const TextStyle(
                               color: AppTheme.textMuted,
                               fontSize: 12,
                             ),
@@ -99,7 +102,7 @@ class ParkingPaymentScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Icon(
+                    const Icon(
                       Icons.check_circle,
                       color: AppTheme.primaryGreen,
                     ),
@@ -109,9 +112,9 @@ class ParkingPaymentScreen extends StatelessWidget {
 
               const SizedBox(height: 28),
 
-              const Text(
-                'Booking Summary',
-                style: TextStyle(
+              Text(
+                l10n.bookingSummary,
+                style: const TextStyle(
                   fontSize: 19,
                   fontWeight: FontWeight.bold,
                   color: AppTheme.textDark,
@@ -130,15 +133,30 @@ class ParkingPaymentScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _summaryRow('Parking', location['name']),
-                    const SizedBox(height: 15),
-                    _summaryRow('Date', formattedDate),
-                    const SizedBox(height: 15),
-                    _summaryRow('Time', selectedTime),
-                    const Divider(height: 30),
                     _summaryRow(
-                      'Total',
-                      location['price'],
+                      l10n.parkingLabel,
+                      location['name']?.toString() ?? '',
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    _summaryRow(
+                      l10n.dateLabel,
+                      formattedDate,
+                    ),
+
+                    const SizedBox(height: 15),
+
+                    _summaryRow(
+                      l10n.timeLabel,
+                      selectedTime,
+                    ),
+
+                    const Divider(height: 30),
+
+                    _summaryRow(
+                      l10n.totalLabel,
+                      location['price']?.toString() ?? '',
                       isTotal: true,
                     ),
                   ],
@@ -153,18 +171,18 @@ class ParkingPaymentScreen extends StatelessWidget {
                   color: const Color(0xFFEAE3D2),
                   borderRadius: BorderRadius.circular(14),
                 ),
-                child: const Row(
+                child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.info_outline,
                       color: AppTheme.primaryGreen,
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: Text(
-                        'Demonstration payment only. No real money will be charged.',
-                        style: TextStyle(
+                        l10n.demoPaymentNotice,
+                        style: const TextStyle(
                           fontSize: 13,
                           height: 1.5,
                           color: AppTheme.textDark,
@@ -201,9 +219,10 @@ class ParkingPaymentScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  child: const Text(
-                    'Continue to Card Details',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.continueToCardDetails,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -223,23 +242,30 @@ class ParkingPaymentScreen extends StatelessWidget {
     bool isTotal = false,
   }) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: TextStyle(
-            color: isTotal ? AppTheme.textDark : AppTheme.textMuted,
-            fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+        Expanded(
+          flex: 1,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: isTotal ? AppTheme.textDark : AppTheme.textMuted,
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
+              fontSize: isTotal ? 16 : 14,
+            ),
           ),
         ),
-        Flexible(
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 2,
           child: Text(
             value,
             textAlign: TextAlign.end,
+            softWrap: true,
             style: TextStyle(
               color: AppTheme.textDark,
               fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
-              fontSize: isTotal ? 17 : 14,
+              fontSize: isTotal ? 15 : 14,
             ),
           ),
         ),

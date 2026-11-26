@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 import 'booking_storage.dart';
 
 class ReservationsScreen extends StatefulWidget {
@@ -54,18 +56,17 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
   Future<void> _cancelBooking(
     Map<String, dynamic> booking,
   ) async {
+    final l10n = AppLocalizations.of(context)!;
+
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
-        title: const Text('Cancel Reservation?'),
-        content: const Text(
-          'Are you sure you want to cancel this parking reservation? '
-          'This demonstration will simulate a successful refund.',
-        ),
+        title: Text(l10n.cancelReservationTitle),
+        content: Text(l10n.cancelReservationMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(dialogContext, false),
-            child: const Text('Keep Reservation'),
+            child: Text(l10n.keepReservation),
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -73,7 +74,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
               foregroundColor: Colors.white,
             ),
             onPressed: () => Navigator.pop(dialogContext, true),
-            child: const Text('Confirm Cancellation'),
+            child: Text(l10n.confirmCancellation),
           ),
         ],
       ),
@@ -98,10 +99,8 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(
-            'Reservation cancelled. Demo refund processed.',
-          ),
+        SnackBar(
+          content: Text(l10n.cancellationSuccess),
           backgroundColor: AppTheme.primaryGreen,
         ),
       );
@@ -110,7 +109,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Cancellation failed: $error'),
+          content: Text('${l10n.cancellationFailed}: $error'),
         ),
       );
     }
@@ -118,10 +117,12 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       appBar: AppBar(
-        title: const Text('My Reservations'),
+        title: Text(l10n.myReservations),
         backgroundColor: AppTheme.ivory,
         actions: [
           IconButton(
@@ -140,8 +141,8 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
           }
 
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Unable to load reservations.'),
+            return Center(
+              child: Text(l10n.unableToLoadReservations),
             );
           }
 
@@ -152,29 +153,35 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
               onRefresh: _refreshBookings,
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
-                children: const [
-                  SizedBox(height: 180),
-                  Icon(
+                children: [
+                  const SizedBox(height: 180),
+                  const Icon(
                     Icons.event_busy,
                     size: 64,
                     color: AppTheme.textMuted,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Center(
                     child: Text(
-                      'No Reservations Yet',
-                      style: TextStyle(
+                      l10n.noReservationsYet,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.textDark,
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Center(
-                    child: Text(
-                      'Your parking reservations will appear here.',
-                      style: TextStyle(color: AppTheme.textMuted),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Text(
+                        l10n.reservationsWillAppearHere,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: AppTheme.textMuted,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -196,6 +203,18 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                     booking['status']?.toString() ?? 'Confirmed';
 
                 final cancelled = status == 'Cancelled';
+
+                final displayStatus = cancelled
+                    ? l10n.cancelledStatus
+                    : l10n.confirmedStatus;
+
+                final paymentMethod =
+                    booking['paymentMethod']?.toString() ?? '-';
+
+                final displayPaymentMethod =
+                    paymentMethod == 'Credit / Debit Card'
+                        ? l10n.creditDebitCard
+                        : paymentMethod;
 
                 return Card(
                   color: AppTheme.white,
@@ -219,7 +238,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                             Expanded(
                               child: Text(
                                 booking['location']?.toString() ??
-                                    'Parking Location',
+                                    l10n.parkingLocation,
                                 style: const TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.bold,
@@ -229,42 +248,57 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                             ),
                           ],
                         ),
+
                         const Divider(height: 24),
+
                         _detailRow(
-                          'Booking Reference',
+                          l10n.bookingReference,
                           booking['bookingReference']?.toString() ?? '-',
                         ),
+
                         _detailRow(
-                          'Date',
+                          l10n.dateLabel,
                           _formatDate(
                             booking['date']?.toString() ?? '',
                           ),
                         ),
+
                         _detailRow(
-                          'Time',
+                          l10n.timeLabel,
                           booking['time']?.toString() ?? '-',
                         ),
+
                         _detailRow(
-                          'Payment',
-                          booking['paymentMethod']?.toString() ?? '-',
+                          l10n.paymentMethod,
+                          displayPaymentMethod,
                         ),
-                        _detailRow('Status', status),
+
+                        _detailRow(
+                          l10n.statusLabel,
+                          displayStatus,
+                          valueColor: cancelled
+                              ? Colors.red
+                              : AppTheme.primaryGreen,
+                        ),
+
                         if (cancelled)
                           _detailRow(
-                            'Refund',
-                            booking['refundStatus']?.toString() ??
-                                'Not available',
+                            l10n.refundLabel,
+                            l10n.demoRefundProcessed,
                           ),
+
                         const Divider(height: 24),
+
                         Row(
                           mainAxisAlignment:
                               MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              'Total',
-                              style: TextStyle(
+                            Text(
+                              l10n.totalLabel,
+                              style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                color: AppTheme.textDark,
                               ),
                             ),
                             Text(
@@ -277,6 +311,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                             ),
                           ],
                         ),
+
                         if (_canCancel(booking)) ...[
                           const SizedBox(height: 16),
                           SizedBox(
@@ -287,7 +322,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                                 Icons.cancel_outlined,
                                 color: Colors.red,
                               ),
-                              label: const Text('Cancel Reservation'),
+                              label: Text(l10n.cancelReservation),
                               style: OutlinedButton.styleFrom(
                                 foregroundColor: Colors.red,
                                 side: const BorderSide(
@@ -300,12 +335,13 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
                             ),
                           ),
                         ],
+
                         if (cancelled)
-                          const Padding(
-                            padding: EdgeInsets.only(top: 12),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 12),
                             child: Text(
-                              'This reservation has been cancelled.',
-                              style: TextStyle(
+                              l10n.reservationCancelledNotice,
+                              style: const TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -323,23 +359,36 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
     );
   }
 
-  Widget _detailRow(String label, String value) {
+  Widget _detailRow(
+    String label,
+    String value, {
+    Color? valueColor,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: const TextStyle(color: AppTheme.textMuted),
+          Expanded(
+            flex: 2,
+            child: Text(
+              label,
+              style: const TextStyle(
+                color: AppTheme.textMuted,
+              ),
+            ),
           ),
-          Flexible(
+          const SizedBox(width: 12),
+          Expanded(
+            flex: 3,
             child: Text(
               value,
               textAlign: TextAlign.end,
-              style: const TextStyle(
+              softWrap: true,
+              style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: AppTheme.textDark,
+                color: valueColor ?? AppTheme.textDark,
               ),
             ),
           ),
