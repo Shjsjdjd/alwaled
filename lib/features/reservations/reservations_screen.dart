@@ -109,8 +109,7 @@ class _ReservationsScreenState extends State<ReservationsScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${l10n.cancellationFailed}: $error'),
-        ),
+content: Text(l10n.cancellationFailed),        ),
       );
     }
   }

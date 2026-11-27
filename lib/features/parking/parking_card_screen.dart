@@ -94,8 +94,7 @@ class _ParkingCardScreenState extends State<ParkingCardScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('${l10n.bookingFailed}: $error'),
-          backgroundColor: Colors.red,
+content: Text(l10n.bookingFailed),          backgroundColor: Colors.red,
           duration: const Duration(seconds: 6),
         ),
       );

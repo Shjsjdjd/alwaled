@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+
 import '../../core/theme/app_theme.dart';
+import '../../l10n/app_localizations.dart';
 
 class AreaDetailsScreen extends StatelessWidget {
   const AreaDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: AppTheme.ivory,
       body: CustomScrollView(
@@ -16,9 +20,9 @@ class AreaDetailsScreen extends StatelessWidget {
             backgroundColor: AppTheme.ivory,
             foregroundColor: AppTheme.textDark,
             flexibleSpace: FlexibleSpaceBar(
-              title: const Text(
-                'Damascus',
-                style: TextStyle(
+              title: Text(
+                l10n.damascus,
+                style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   shadows: [
@@ -58,88 +62,95 @@ class AreaDetailsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Discover Damascus',
-                    style: TextStyle(
+                  Text(
+                    l10n.discoverDamascus,
+                    style: const TextStyle(
                       fontSize: 23,
                       fontWeight: FontWeight.bold,
                       color: AppTheme.textDark,
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Text(
-                    'Explore one of the world’s oldest continuously '
-                    'inhabited cities, known for its historic markets, '
-                    'traditional architecture, and rich cultural heritage.',
-                    style: TextStyle(
+                  Text(
+                    l10n.damascusOverview,
+                    style: const TextStyle(
                       fontSize: 14,
                       height: 1.6,
                       color: AppTheme.textMuted,
                     ),
                   ),
                   const SizedBox(height: 28),
-                  _buildSectionTitle('Top Attractions'),
+
+                  _buildSectionTitle(l10n.topAttractions),
                   const SizedBox(height: 14),
+
                   _buildPlaceCard(
                     icon: Icons.mosque_outlined,
                     name: 'Umayyad Mosque',
-                    subtitle: 'Historic mosque in the Old City',
+                    subtitle: l10n.umayyadMosqueSubtitle,
                     rating: '4.9',
                   ),
                   _buildPlaceCard(
                     icon: Icons.account_balance_outlined,
                     name: 'Azm Palace',
-                    subtitle: 'Traditional Damascene architecture',
+                    subtitle: l10n.azmPalaceSubtitle,
                     rating: '4.7',
                   ),
                   _buildPlaceCard(
                     icon: Icons.storefront_outlined,
                     name: 'Al-Hamidiyya Souq',
-                    subtitle: 'Famous traditional covered market',
+                    subtitle: l10n.hamidiyyaSouqSubtitle,
                     rating: '4.8',
                   ),
+
                   const SizedBox(height: 28),
-                  _buildSectionTitle('Recommended Hotels'),
+
+                  _buildSectionTitle(l10n.recommendedHotels),
                   const SizedBox(height: 14),
+
                   _buildPlaceCard(
                     icon: Icons.hotel_outlined,
                     name: 'Beit Zaman Hotel',
-                    subtitle: 'Traditional boutique hotel',
+                    subtitle: l10n.beitZamanSubtitle,
                     rating: '4.6',
                   ),
                   _buildPlaceCard(
                     icon: Icons.hotel_outlined,
                     name: 'Damascus Rose Hotel',
-                    subtitle: 'Comfortable city accommodation',
+                    subtitle: l10n.damascusRoseSubtitle,
                     rating: '4.5',
                   ),
                   _buildPlaceCard(
                     icon: Icons.hotel_outlined,
                     name: 'Old City Hotel',
-                    subtitle: 'Stay near historical landmarks',
+                    subtitle: l10n.oldCityHotelSubtitle,
                     rating: '4.4',
                   ),
+
                   const SizedBox(height: 28),
-                  _buildSectionTitle('Recommended Restaurants'),
+
+                  _buildSectionTitle(l10n.recommendedRestaurants),
                   const SizedBox(height: 14),
+
                   _buildPlaceCard(
                     icon: Icons.restaurant_outlined,
                     name: 'Naranj Restaurant',
-                    subtitle: 'Traditional Syrian cuisine',
+                    subtitle: l10n.naranjSubtitle,
                     rating: '4.7',
                   ),
                   _buildPlaceCard(
                     icon: Icons.restaurant_outlined,
                     name: 'Beit Jabri',
-                    subtitle: 'Damascene dining experience',
+                    subtitle: l10n.beitJabriSubtitle,
                     rating: '4.8',
                   ),
                   _buildPlaceCard(
                     icon: Icons.restaurant_outlined,
                     name: 'Al Khawali',
-                    subtitle: 'Restaurant in the Old City',
+                    subtitle: l10n.alKhawaliSubtitle,
                     rating: '4.6',
                   ),
+
                   const SizedBox(height: 30),
                 ],
               ),

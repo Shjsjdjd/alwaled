@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/auth/auth_service.dart';
+import '../../core/auth/auth_entry_screen.dart';
 import '../../l10n/app_localizations.dart';
 import 'parking_reservation_screen.dart';
 
@@ -44,11 +46,43 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
       lastDate: DateTime.now().add(const Duration(days: 90)),
     );
 
-    if (picked != null) {
-      setState(() {
-        selectedDate = picked;
-      });
+    if (!mounted || picked == null) return;
+
+    setState(() {
+      selectedDate = picked;
+    });
+  }
+
+  Future<void> _continueBooking() async {
+    if (selectedTime == null) return;
+
+    if (!AuthService.isLoggedIn.value) {
+      final result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AuthEntryScreen(),
+        ),
+      );
+
+      if (!mounted) return;
+
+      if (result != true || !AuthService.isLoggedIn.value) {
+        return;
+      }
     }
+
+    if (!mounted) return;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ParkingReservationScreen(
+          location: widget.location,
+          selectedDate: selectedDate,
+          selectedTime: selectedTime!,
+        ),
+      ),
+    );
   }
 
   @override
@@ -98,21 +132,8 @@ class _ParkingDetailsScreenState extends State<ParkingDetailsScreen> {
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: selectedTime == null
-                      ? null
-                      : () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ParkingReservationScreen(
-                                location: location,
-                                selectedDate: selectedDate,
-                                selectedTime: selectedTime!,
-                              ),
-                            ),
-                          );
-                        },
+                  onPressed:
+                      selectedTime == null ? null : _continueBooking,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryGreen,
                     foregroundColor: Colors.white,

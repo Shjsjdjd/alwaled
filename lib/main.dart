@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+
 import 'core/currency/app_currency.dart';
 import 'core/routing/main_navigation.dart';
 import 'core/theme/app_theme.dart';
 import 'core/localization/app_language.dart';
+import 'core/auth/auth_service.dart';
 import 'l10n/app_localizations.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await AppLanguage.loadLanguage();
   await AppCurrency.loadCurrency();
+  await AuthService.loadSession();
 
   runApp(const SyriaDiscoverApp());
 }

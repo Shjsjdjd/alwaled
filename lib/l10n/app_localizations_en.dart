@@ -586,4 +586,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get currencyEurName => 'Euro (EUR)';
+
+  @override
+  String get loginTitle => 'Welcome Back';
+
+  @override
+  String get loginSubtitle => 'Log in to continue exploring Syria.';
+
+  @override
+  String get loginButton => 'Log In';
+
+  @override
+  String get registerTitle => 'Create Account';
+
+  @override
+  String get registerSubtitle =>
+      'Create an account to access bookings and reservations.';
+
+  @override
+  String get registerButton => 'Create Account';
+
+  @override
+  String get continueAsGuest => 'Continue as Guest';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get enterPassword => 'Please enter your password.';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters.';
+
+  @override
+  String get enterConfirmPassword => 'Please confirm your password.';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match.';
+
+  @override
+  String get loginFailed => 'Incorrect email or password.';
+
+  @override
+  String get emailAlreadyRegistered => 'This email is already registered.';
+
+  @override
+  String get guestWelcome => 'Welcome to Syria Discover';
+
+  @override
+  String get guestProfileDescription =>
+      'Log in or create an account to manage your bookings and profile.';
+
+  @override
+  String get loginOrRegister => 'Log In / Create Account';
+
+  @override
+  String get noAccount => 'Don\'t have an account?';
+
+  @override
+  String get alreadyHaveAccount => 'Already have an account?';
+
+  @override
+  String get continueExploringAsGuest =>
+      'You can continue exploring the app as a guest.';
+
+  @override
+  String get discoverDamascus => 'Discover Damascus';
+
+  @override
+  String get damascusOverview =>
+      'Explore one of the world\'s oldest continuously inhabited cities, known for its historic markets, traditional architecture, and rich cultural heritage.';
+
+  @override
+  String get topAttractions => 'Top Attractions';
+
+  @override
+  String get umayyadMosqueSubtitle => 'Historic mosque in the Old City';
+
+  @override
+  String get azmPalaceSubtitle => 'Traditional Damascene architecture';
+
+  @override
+  String get hamidiyyaSouqSubtitle => 'Famous traditional covered market';
+
+  @override
+  String get recommendedHotels => 'Recommended Hotels';
+
+  @override
+  String get beitZamanSubtitle => 'Traditional boutique hotel';
+
+  @override
+  String get damascusRoseSubtitle => 'Comfortable city accommodation';
+
+  @override
+  String get oldCityHotelSubtitle => 'Stay near historical landmarks';
+
+  @override
+  String get recommendedRestaurants => 'Recommended Restaurants';
+
+  @override
+  String get naranjSubtitle => 'Traditional Syrian cuisine';
+
+  @override
+  String get beitJabriSubtitle => 'Damascene dining experience';
+
+  @override
+  String get alKhawaliSubtitle => 'Restaurant in the Old City';
 }

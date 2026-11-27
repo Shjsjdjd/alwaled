@@ -4,10 +4,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/localization/app_language.dart';
 import '../../core/currency/app_currency.dart';
+import '../../core/auth/auth_service.dart';
+import '../../core/auth/auth_entry_screen.dart';
 import '../../l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  final VoidCallback? onLogout;
+
+  const ProfileScreen({
+    super.key,
+    this.onLogout,
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -37,8 +44,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     setState(() {
-      _name = prefs.getString('profile_name') ?? l10n.defaultUserName;
-      _email = prefs.getString('profile_email') ?? l10n.defaultEmail;
+      _name = prefs.getString('profile_name') ??
+          AuthService.currentUserName ??
+          l10n.defaultUserName;
+
+      _email = prefs.getString('profile_email') ??
+          AuthService.currentUserEmail ??
+          l10n.defaultEmail;
     });
   }
 
@@ -48,6 +60,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     await prefs.setString('profile_name', name);
     await prefs.setString('profile_email', email);
 
+    AuthService.currentUserName = name;
+    AuthService.currentUserEmail = email;
+
     if (!mounted) return;
 
     setState(() {
@@ -56,13 +71,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
 
     final l10n = AppLocalizations.of(context)!;
+    _showMessage(l10n.profileUpdated);
+  }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(l10n.profileUpdated),
-        behavior: SnackBarBehavior.floating,
+  Future<void> _openAuthentication() async {
+    final result = await Navigator.push<bool>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const AuthEntryScreen(),
       ),
     );
+
+    if (!mounted) return;
+
+    if (result == true && AuthService.isLoggedIn.value) {
+      await _loadProfile();
+    }
+  }
+
+  Future<void> _logout() async {
+    await AuthService.logout();
+
+    if (!mounted) return;
+
+    setState(() {
+      _name = '';
+      _email = '';
+    });
+
+    widget.onLogout?.call();
   }
 
   void _showEditProfileDialog() {
@@ -198,169 +235,256 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                l10n.profile,
+    return ValueListenableBuilder<bool>(
+      valueListenable: AuthService.isLoggedIn,
+      builder: (context, isLoggedIn, child) {
+        return Scaffold(
+          backgroundColor: backgroundColor,
+          body: SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n.profile,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                      color: primaryGreen,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Container(
+                    width: 32,
+                    height: 2,
+                    decoration: BoxDecoration(
+                      color: gold,
+                      borderRadius: BorderRadius.circular(1),
+                    ),
+                  ),
+                  const SizedBox(height: 35),
+                  if (isLoggedIn)
+                    _buildLoggedInProfile(l10n)
+                  else
+                    _buildGuestProfile(l10n),
+                  const SizedBox(height: 32),
+                  _buildSettingsOptions(l10n),
+                  if (isLoggedIn) ...[
+                    const SizedBox(height: 20),
+                    _buildLogoutButton(l10n),
+                  ],
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildGuestProfile(AppLocalizations l10n) {
+    return Center(
+      child: Column(
+        children: [
+          Container(
+            width: 95,
+            height: 95,
+            decoration: BoxDecoration(
+              color: primaryGreen.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.person_outline,
+              size: 48,
+              color: primaryGreen,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            l10n.guestWelcome,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 19,
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n.guestProfileDescription,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 14,
+              height: 1.5,
+              color: mutedColor,
+            ),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: double.infinity,
+            height: 52,
+            child: ElevatedButton(
+              onPressed: _openAuthentication,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryGreen,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              ),
+              child: Text(
+                l10n.loginOrRegister,
                 style: const TextStyle(
-                  fontSize: 26,
+                  fontSize: 15,
                   fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Text(
+            l10n.continueExploringAsGuest,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 12,
+              color: mutedColor,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLoggedInProfile(AppLocalizations l10n) {
+    return Column(
+      children: [
+        Center(
+          child: Column(
+            children: [
+              Container(
+                width: 88,
+                height: 88,
+                decoration: BoxDecoration(
+                  color: primaryGreen.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.person_outline,
+                  size: 42,
                   color: primaryGreen,
                 ),
               ),
-
-              const SizedBox(height: 10),
-
-              Container(
-                width: 32,
-                height: 2,
-                decoration: BoxDecoration(
-                  color: gold,
-                  borderRadius: BorderRadius.circular(1),
+              const SizedBox(height: 24),
+              Text(
+                _name,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
                 ),
               ),
-
-              const SizedBox(height: 48),
-
-              Center(
-                child: Column(
-                  children: [
-                    Container(
-                      width: 88,
-                      height: 88,
-                      decoration: BoxDecoration(
-                        color: primaryGreen.withValues(alpha: 0.1),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.person_outline,
-                        size: 42,
-                        color: primaryGreen,
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    Text(
-                      _name,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
-                    ),
-
-                    const SizedBox(height: 6),
-
-                    Text(
-                      _email,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: mutedColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 32),
-
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: textColor.withValues(alpha: 0.07),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    _buildOption(
-                      title: l10n.editProfile,
-                      onTap: _showEditProfileDialog,
-                    ),
-
-                    _buildDivider(),
-
-                    ValueListenableBuilder<Locale>(
-                      valueListenable: AppLanguage.locale,
-                      builder: (context, locale, child) {
-                        final language =
-                            locale.languageCode == 'ar'
-                                ? l10n.arabic
-                                : l10n.english;
-
-                        return _buildOption(
-                          title: '${l10n.language}: $language',
-                          onTap: _showLanguageDialog,
-                        );
-                      },
-                    ),
-
-                    _buildDivider(),
-
-                    ValueListenableBuilder<String>(
-                      valueListenable: AppCurrency.currency,
-                      builder: (context, currency, child) {
-                        return _buildOption(
-                          title:
-                              '${l10n.currency}: ${_currencyName(currency, l10n)}',
-                          onTap: _showCurrencyDialog,
-                        );
-                      },
-                    ),
-
-                    _buildDivider(),
-
-                    _buildOption(
-                      title: l10n.settings,
-                      onTap: () {
-                        _showMessage(l10n.settingsNotImplemented);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 20),
-
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: OutlinedButton(
-                  onPressed: () {
-                    _showMessage(
-                      l10n.authenticationNotConnected,
-                    );
-                  },
-                  style: OutlinedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: const Color(0xFFB3402F),
-                    side: BorderSide(
-                      color: textColor.withValues(alpha: 0.07),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                  ),
-                  child: Text(
-                    l10n.logout,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+              const SizedBox(height: 6),
+              Text(
+                _email,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 13,
+                  color: mutedColor,
                 ),
               ),
             ],
+          ),
+        ),
+        const SizedBox(height: 28),
+        Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: textColor.withValues(alpha: 0.07),
+            ),
+          ),
+          child: _buildOption(
+            title: l10n.editProfile,
+            onTap: _showEditProfileDialog,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSettingsOptions(AppLocalizations l10n) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: textColor.withValues(alpha: 0.07),
+        ),
+      ),
+      child: Column(
+        children: [
+          ValueListenableBuilder<Locale>(
+            valueListenable: AppLanguage.locale,
+            builder: (context, locale, child) {
+              final language = locale.languageCode == 'ar'
+                  ? l10n.arabic
+                  : l10n.english;
+
+              return _buildOption(
+                title: '${l10n.language}: $language',
+                onTap: _showLanguageDialog,
+              );
+            },
+          ),
+          _buildDivider(),
+          ValueListenableBuilder<String>(
+            valueListenable: AppCurrency.currency,
+            builder: (context, currency, child) {
+              return _buildOption(
+                title:
+                    '${l10n.currency}: ${_currencyName(currency, l10n)}',
+                onTap: _showCurrencyDialog,
+              );
+            },
+          ),
+          _buildDivider(),
+          _buildOption(
+            title: l10n.settings,
+            onTap: () {
+              _showMessage(l10n.settingsNotImplemented);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLogoutButton(AppLocalizations l10n) {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: OutlinedButton(
+        onPressed: _logout,
+        style: OutlinedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFFB3402F),
+          side: BorderSide(
+            color: textColor.withValues(alpha: 0.07),
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+        ),
+        child: Text(
+          l10n.logout,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),
@@ -413,8 +537,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-// Edit Profile Dialog
 
 class EditProfileDialog extends StatefulWidget {
   final String initialName;
@@ -483,9 +605,7 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
                 return null;
               },
             ),
-
             const SizedBox(height: 16),
-
             TextFormField(
               controller: emailController,
               keyboardType: TextInputType.emailAddress,
@@ -512,7 +632,6 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
           },
           child: Text(l10n.cancel),
         ),
-
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: const Color(0xFF245548),

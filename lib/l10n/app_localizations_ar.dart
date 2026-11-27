@@ -581,4 +581,111 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get currencyEurName => 'اليورو (EUR)';
+
+  @override
+  String get loginTitle => 'مرحباً بعودتك';
+
+  @override
+  String get loginSubtitle => 'سجّل الدخول لمتابعة استكشاف سوريا.';
+
+  @override
+  String get loginButton => 'تسجيل الدخول';
+
+  @override
+  String get registerTitle => 'إنشاء حساب';
+
+  @override
+  String get registerSubtitle => 'أنشئ حساباً للوصول إلى الحجوزات وإدارتها.';
+
+  @override
+  String get registerButton => 'إنشاء حساب';
+
+  @override
+  String get continueAsGuest => 'المتابعة كزائر';
+
+  @override
+  String get password => 'كلمة المرور';
+
+  @override
+  String get confirmPassword => 'تأكيد كلمة المرور';
+
+  @override
+  String get enterPassword => 'يرجى إدخال كلمة المرور.';
+
+  @override
+  String get passwordTooShort => 'يجب ألا تقل كلمة المرور عن 6 أحرف.';
+
+  @override
+  String get enterConfirmPassword => 'يرجى تأكيد كلمة المرور.';
+
+  @override
+  String get passwordsDoNotMatch => 'كلمتا المرور غير متطابقتين.';
+
+  @override
+  String get loginFailed => 'البريد الإلكتروني أو كلمة المرور غير صحيحة.';
+
+  @override
+  String get emailAlreadyRegistered => 'هذا البريد الإلكتروني مسجل بالفعل.';
+
+  @override
+  String get guestWelcome => 'مرحباً بك في اكتشف سوريا';
+
+  @override
+  String get guestProfileDescription =>
+      'سجّل الدخول أو أنشئ حساباً لإدارة حجوزاتك وملفك الشخصي.';
+
+  @override
+  String get loginOrRegister => 'تسجيل الدخول / إنشاء حساب';
+
+  @override
+  String get noAccount => 'ليس لديك حساب؟';
+
+  @override
+  String get alreadyHaveAccount => 'لديك حساب بالفعل؟';
+
+  @override
+  String get continueExploringAsGuest => 'يمكنك متابعة استكشاف التطبيق كزائر.';
+
+  @override
+  String get discoverDamascus => 'اكتشف دمشق';
+
+  @override
+  String get damascusOverview =>
+      'استكشف واحدة من أقدم المدن المأهولة باستمرار في العالم، والتي تشتهر بأسواقها التاريخية وعمارتها التقليدية وتراثها الثقافي الغني.';
+
+  @override
+  String get topAttractions => 'أبرز المعالم السياحية';
+
+  @override
+  String get umayyadMosqueSubtitle => 'مسجد تاريخي في المدينة القديمة';
+
+  @override
+  String get azmPalaceSubtitle => 'عمارة دمشقية تقليدية';
+
+  @override
+  String get hamidiyyaSouqSubtitle => 'سوق تقليدي مسقوف وشهير';
+
+  @override
+  String get recommendedHotels => 'الفنادق المقترحة';
+
+  @override
+  String get beitZamanSubtitle => 'فندق بوتيكي بطابع تقليدي';
+
+  @override
+  String get damascusRoseSubtitle => 'إقامة مريحة في المدينة';
+
+  @override
+  String get oldCityHotelSubtitle => 'إقامة بالقرب من المعالم التاريخية';
+
+  @override
+  String get recommendedRestaurants => 'المطاعم المقترحة';
+
+  @override
+  String get naranjSubtitle => 'مأكولات سورية تقليدية';
+
+  @override
+  String get beitJabriSubtitle => 'تجربة طعام دمشقية';
+
+  @override
+  String get alKhawaliSubtitle => 'مطعم في المدينة القديمة';
 }

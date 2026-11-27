@@ -1213,6 +1213,216 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Euro (EUR)'**
   String get currencyEurName;
+
+  /// No description provided for @loginTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back'**
+  String get loginTitle;
+
+  /// No description provided for @loginSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in to continue exploring Syria.'**
+  String get loginSubtitle;
+
+  /// No description provided for @loginButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In'**
+  String get loginButton;
+
+  /// No description provided for @registerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerTitle;
+
+  /// No description provided for @registerSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account to access bookings and reservations.'**
+  String get registerSubtitle;
+
+  /// No description provided for @registerButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Account'**
+  String get registerButton;
+
+  /// No description provided for @continueAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue as Guest'**
+  String get continueAsGuest;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @confirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// No description provided for @enterPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password.'**
+  String get enterPassword;
+
+  /// No description provided for @passwordTooShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters.'**
+  String get passwordTooShort;
+
+  /// No description provided for @enterConfirmPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Please confirm your password.'**
+  String get enterConfirmPassword;
+
+  /// No description provided for @passwordsDoNotMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match.'**
+  String get passwordsDoNotMatch;
+
+  /// No description provided for @loginFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get loginFailed;
+
+  /// No description provided for @emailAlreadyRegistered.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered.'**
+  String get emailAlreadyRegistered;
+
+  /// No description provided for @guestWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Syria Discover'**
+  String get guestWelcome;
+
+  /// No description provided for @guestProfileDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Log in or create an account to manage your bookings and profile.'**
+  String get guestProfileDescription;
+
+  /// No description provided for @loginOrRegister.
+  ///
+  /// In en, this message translates to:
+  /// **'Log In / Create Account'**
+  String get loginOrRegister;
+
+  /// No description provided for @noAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get noAccount;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @continueExploringAsGuest.
+  ///
+  /// In en, this message translates to:
+  /// **'You can continue exploring the app as a guest.'**
+  String get continueExploringAsGuest;
+
+  /// No description provided for @discoverDamascus.
+  ///
+  /// In en, this message translates to:
+  /// **'Discover Damascus'**
+  String get discoverDamascus;
+
+  /// No description provided for @damascusOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Explore one of the world\'s oldest continuously inhabited cities, known for its historic markets, traditional architecture, and rich cultural heritage.'**
+  String get damascusOverview;
+
+  /// No description provided for @topAttractions.
+  ///
+  /// In en, this message translates to:
+  /// **'Top Attractions'**
+  String get topAttractions;
+
+  /// No description provided for @umayyadMosqueSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Historic mosque in the Old City'**
+  String get umayyadMosqueSubtitle;
+
+  /// No description provided for @azmPalaceSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional Damascene architecture'**
+  String get azmPalaceSubtitle;
+
+  /// No description provided for @hamidiyyaSouqSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Famous traditional covered market'**
+  String get hamidiyyaSouqSubtitle;
+
+  /// No description provided for @recommendedHotels.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended Hotels'**
+  String get recommendedHotels;
+
+  /// No description provided for @beitZamanSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional boutique hotel'**
+  String get beitZamanSubtitle;
+
+  /// No description provided for @damascusRoseSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Comfortable city accommodation'**
+  String get damascusRoseSubtitle;
+
+  /// No description provided for @oldCityHotelSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay near historical landmarks'**
+  String get oldCityHotelSubtitle;
+
+  /// No description provided for @recommendedRestaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended Restaurants'**
+  String get recommendedRestaurants;
+
+  /// No description provided for @naranjSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Traditional Syrian cuisine'**
+  String get naranjSubtitle;
+
+  /// No description provided for @beitJabriSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Damascene dining experience'**
+  String get beitJabriSubtitle;
+
+  /// No description provided for @alKhawaliSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurant in the Old City'**
+  String get alKhawaliSubtitle;
 }
 
 class _AppLocalizationsDelegate

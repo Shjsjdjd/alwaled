@@ -1,6 +1,9 @@
-
 import 'package:flutter/material.dart';
+
 import '../../l10n/app_localizations.dart';
+import '../../core/auth/auth_service.dart';
+import '../../core/auth/auth_entry_screen.dart';
+
 import '../../features/parking/parking_screen.dart';
 import '../../features/home/home_screen.dart';
 import '../../features/assistant/assistant_screen.dart';
@@ -18,7 +21,23 @@ class MainNavigation extends StatefulWidget {
 class _MainNavigationState extends State<MainNavigation> {
   int _selectedIndex = 0;
 
-  void _selectTab(int index) {
+  Future<void> _selectTab(int index) async {
+    // Reservations require authentication.
+    if (index == 4 && !AuthService.isLoggedIn.value) {
+      final result = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const AuthEntryScreen(),
+        ),
+      );
+
+      if (!mounted) return;
+
+      if (result != true || !AuthService.isLoggedIn.value) {
+        return;
+      }
+    }
+
     setState(() {
       _selectedIndex = index;
     });
@@ -37,8 +56,13 @@ class _MainNavigationState extends State<MainNavigation> {
       const PlannerScreen(),
       const ParkingScreen(),
       const ReservationsScreen(),
-      const ProfileScreen(),
-    ];
+ProfileScreen(
+  onLogout: () {
+    setState(() {
+      _selectedIndex = 0;
+    });
+  },
+),    ];
 
     final destinations = [
       NavigationDestination(
